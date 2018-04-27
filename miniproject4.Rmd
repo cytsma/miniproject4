@@ -1,0 +1,12 @@
+---
+title: "Mini Project 4"
+author: "Cai Ytsma, Juliane Bombosch, Sofia Salcedo"
+date: "April 27, 2018"
+output: html_document
+---
+
+dear god please work! i have changed this
+
+```{r}
+library suck my cock
+```
