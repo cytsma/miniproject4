@@ -6,7 +6,4 @@ output: html_document
 ---
 
 dear god please work! i have changed this
-
-```{r}
-library suck my cock
-```
+`
