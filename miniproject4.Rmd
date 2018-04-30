@@ -8,3 +8,14 @@ output: html_document
 Using taxi and plane data, joining databases? To see connections between taxi and plane, in the shadow of ride sharing services.
 
 
+```{r}
+#calling the libraries
+library(tidyverse)
+library(mdsr)
+library(RMySQL)
+```
+
+```{r}
+db <- dbConnect_scidb(dbname = "nyctaxi")
+
+```
