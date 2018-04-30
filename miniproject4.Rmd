@@ -4,12 +4,7 @@ author: "Cai Ytsma, Juliane Bombosch, Sofia Salcedo"
 date: "April 27, 2018"
 output: html_document
 ---
-HOWDY
-I have added to the document
 
+Using taxi and plane data, joining databases? To see connections between taxi and plane, in the shadow of ride sharing services.
 
-I have added to the document
-
-
-j add
 
