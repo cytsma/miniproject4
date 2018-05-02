@@ -16,4 +16,10 @@ library(RMySQL)
 ```
 
 Sofia goals: gathering Uber and lyft info
-1. create a database that has the dates of the information
+1. create a database that has the dates of the information from Uber and lyft info
+What am I trying to get out of that? 
+- how many trips were made per day for each
+```{r}
+
+
+```
