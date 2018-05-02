@@ -15,7 +15,5 @@ library(mdsr)
 library(RMySQL)
 ```
 
-```{r}
-db <- dbConnect_scidb(dbname = "nyctaxi")
-
-```
+Sofia goals: gathering Uber and lyft info
+1. create a database that has the dates of the information
