@@ -4,6 +4,7 @@ author: "Cai Ytsma, Juliane Bombosch, Sofia Salcedo"
 date: "April 27, 2018"
 output: html_document
 ---
+COMPARING JANUARY 2005 and JANUARY 2015
 
 Using taxi and plane data, joining databases? To see connections between taxi and plane, in the shadow of ride sharing services.
 
@@ -13,12 +14,15 @@ Using taxi and plane data, joining databases? To see connections between taxi an
 library(tidyverse)
 library(mdsr)
 library(RMySQL)
+nyctaxi <- dbConnect_scidb(dbname = "nyctaxi")
+airlines <- dbConnect_scidb(dbname = "airlines")
 ```
 
 Sofia goals: gathering Uber and lyft info
 1. create a database that has the dates of the information from Uber and lyft info
 What am I trying to get out of that? 
 - how many trips were made per day for each
+
 - there's nothing in the tables that has lyft or uber data, the rows just say "null"
 
 ```{r}
@@ -26,3 +30,17 @@ https://raw.githubusercontent.com/fivethirtyeight/uber-tlc-foil-response/master/
 ```
 
 for finding the location of the airport, try using PULocationID in the "yellow" taxi data
+
+```{r}
+popular_months <- airlines %>%
+  dbGetQuery("SELECT month, SUM(1) AS sum
+FROM airlines.flights
+WHERE dest = 'JFK'
+GROUP BY month
+ORDER BY sum DESC;")
+```
+
+Cai goals: estimate number of people leaving the airport by date
+
+delineate by domestic/intl - find number cabs per capita and assume differences due to uber
+
