@@ -19,7 +19,10 @@ Sofia goals: gathering Uber and lyft info
 1. create a database that has the dates of the information from Uber and lyft info
 What am I trying to get out of that? 
 - how many trips were made per day for each
+- there's nothing in the tables that has lyft or uber data, the rows just say "null"
+
 ```{r}
-
-
+https://raw.githubusercontent.com/fivethirtyeight/uber-tlc-foil-response/master/uber-trip-data/uber-raw-data-apr14.csv
 ```
+
+for finding the location of the airport, try using PULocationID in the "yellow" taxi data
