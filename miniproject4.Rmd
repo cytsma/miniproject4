@@ -36,25 +36,37 @@ Cai goals: estimate number of people leaving the airport by date
 
 delineate by domestic/intl - find number cabs per capita and assume differences due to uber
 
-```{r}
+```{r, label = "find most average flight month"}
 popular_months <- airlines %>%
   dbGetQuery("SELECT month, SUM(1) AS sum
 FROM airlines.flights
 WHERE dest = 'JFK'
 GROUP BY month
 ORDER BY sum DESC;")
-```
 
-```{r}
-avg <- popular_months %>%
+deviation <- popular_months %>%
   summarize(mean = sum(sum)/12)
 
-mean <- avg[[1]]
+mean <- deviation[[1]]
 
 most_avg_month <- popular_months %>%
   mutate(near_avg = abs((sum/mean) - 1)) %>%
   arrange(near_avg) %>%
   head(1)
+```
+
+```{r, label = "get flight info"}
+flights <- airlines %>%
+  dbGetQuery("SELECT f.*, p.seats FROM airlines.flights f
+INNER JOIN airlines.planes p
+	ON p.tailnum = f.tailnum
+WHERE f.year IN (2005, 2015)
+AND f.month = 4
+AND f.dest = 'JFK';")
+```
+
+```{r}
+
 ```
 
 
