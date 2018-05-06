@@ -8,7 +8,7 @@ output: html_document
 ##
   A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business insider. 
 
-COMPARING APRIL 2005 and APRIL 2015
+***COMPARING JFK AND EWR IN APRIL 2017***
 
 JFK = 132
 Using taxi and plane data, joining databases? To see connections between taxi and plane, in the shadow of ride sharing services.
@@ -90,7 +90,7 @@ flights <- airlines %>%
   dbGetQuery("SELECT f.year, f.day, f.tailnum, f.dest, p.seats FROM airlines.flights f
 INNER JOIN airlines.planes p
 	ON p.tailnum = f.tailnum
-WHERE f.year IN (2009, 2015)
+WHERE f.year = 2017
 AND f.month = 4
 AND f.dest IN ('JFK', 'EWR');")
 ```
@@ -109,15 +109,11 @@ jfk_people <- people_per_day %>%
 
 ```{r}
 #TEST PLOT
-ewr_plot <- ggplot(data = ewr_people, aes(x = day, y = num_people)) +
-  geom_line(data = (ewr_people %>% filter(year == 2015))) +
-  geom_line(data = (ewr_people %>% filter(year == 2009)), color = "red") +
+ewr_2009_plot <- ggplot(data = ewr_people %>% filter(year == 2009), aes(x = day, y = num_people)) +
+  geom_line() +
   theme(panel.grid = element_blank(),
-        panel.background = element_blank()) +
-  scale_fill_manual = ("")
+        panel.background = element_blank()),
+        title(main = "Newark", sub = "2009"))
 
-ewr_plot
+ewr_2009_plot
 ```
-
-```{}
-
