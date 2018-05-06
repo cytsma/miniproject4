@@ -41,9 +41,7 @@ uber_april_2015
 for finding the location of the airport, try using PULocationID in the "yellow" taxi data
 
 ----------
-Cai goals: estimate number of people leaving the airport by date
-
-delineate by domestic/intl - find number cabs per capita and assume differences due to uber
+Cai goals:
 
 ```{r, label = "find most average flight month"}
 popular_months <- airlines %>%
