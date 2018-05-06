@@ -48,6 +48,16 @@ for finding the location of the airport, try using PULocationID in the "yellow" 
 ----------
 Cai goals:
 
+OVERALL GRAPH: line showing max number of people leaving per day
+
+underneath: stacked bar graph to see if number of people getting rides matches number of people leaving airport
+
+within bar - colors corresponding to taxi/uber to see which one has the majority
+
+THEN: analyze percentage of people being picked up vs number of people leaving airport
+
+  -delineate by taxi and uber for 2015 and compare to see if percentage of people picked up by taxi went down
+
 ```{r, label = "find most average flight month"}
 popular_months <- airlines %>%
   dbGetQuery("SELECT month, SUM(1) AS sum
@@ -70,12 +80,12 @@ most_avg_month <- popular_months %>%
 
 ```{r, label = "get flight info"}
 flights <- airlines %>%
-  dbGetQuery("SELECT f.*, p.seats FROM airlines.flights f
+  dbGetQuery("SELECT f.year, f.day, f.tailnum, f.dest, p.seats FROM airlines.flights f
 INNER JOIN airlines.planes p
 	ON p.tailnum = f.tailnum
-WHERE f.year IN (2005, 2015)
+WHERE f.year IN (2009, 2015)
 AND f.month = 4
-AND f.dest = 'JFK';")
+AND f.dest IN ('JFK', 'EWR');")
 ```
 
 ```{r, label = "max number of people leaving per day"}
