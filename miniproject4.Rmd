@@ -15,7 +15,7 @@ output: html_document
 
 
 #Future Aspects
-  In the future we would like to compare 
+  In the future we would like to compare how many taxis were hailed in 2009 versus 2015 when Uber
 
   Resources: 
   http://www.businessinsider.com/history-of-uber-and-its-rise-to-become-the-most-valuable-startup-in-the-world-2015-9
