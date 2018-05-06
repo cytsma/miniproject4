@@ -21,7 +21,7 @@ output: html_document
   http://www.businessinsider.com/history-of-uber-and-its-rise-to-become-the-most-valuable-startup-in-the-world-2015-9
   https://www.forbes.com/sites/niallmccarthy/2016/11/28/fare-deal-how-the-hourly-earnings-of-uber-and-taxi-drivers-measure-up-infographic/#4841d2a1689a
 
-COMPARING APRIL 2005 and APRIL 2015
+***COMPARING JFK AND EWR IN APRIL 2017***
 
 JFK = 132
 Using taxi and plane data, joining databases? To see connections between taxi and plane, in the shadow of ride sharing services.
@@ -103,7 +103,7 @@ flights <- airlines %>%
   dbGetQuery("SELECT f.year, f.day, f.tailnum, f.dest, p.seats FROM airlines.flights f
 INNER JOIN airlines.planes p
 	ON p.tailnum = f.tailnum
-WHERE f.year IN (2009, 2015)
+WHERE f.year = 2017
 AND f.month = 4
 AND f.dest IN ('JFK', 'EWR');")
 ```
@@ -122,14 +122,9 @@ jfk_people <- people_per_day %>%
 
 ```{r}
 #TEST PLOT
-ewr_plot <- ggplot(data = ewr_people, aes(x = day, y = num_people)) +
-  geom_line(data = (ewr_people %>% filter(year == 2015))) +
-  geom_line(data = (ewr_people %>% filter(year == 2009)), color = "red") +
-  theme(panel.grid = element_blank(),
-        panel.background = element_blank()) 
+ewr_2009_plot <- ggplot(data = ewr_people %>% filter(year == 2009), aes(x = day, y = num_people)) +
+  geom_line() +
+  theme(panel.grid = element_blank())
 
-ewr_plot
+ewr_2009_plot
 ```
-
-```{}
-
