@@ -6,7 +6,7 @@ output: html_document
 ---
 COMPARING APRIL 2005 and APRIL 2015
 
-
+JFK = 132
 Using taxi and plane data, joining databases? To see connections between taxi and plane, in the shadow of ride sharing services.
 
 
@@ -24,12 +24,18 @@ Sofia goals: gathering Uber and lyft info
 What am I trying to get out of that? 
 - how many trips were made per day for each
 
-- there's nothing in the tables that has lyft or uber data, the rows just say "null"
 
 ```{r}
 uber_april_2015 <- read.csv("./uber-raw-data-april153.csv")
-head(uber_april_2015)
 
+uber_april_2015 <- uber_april_2015 %>%
+  rename(location_code = `X255`) %>%
+  rename(day = `X4.1.15.0.02`)%>%
+  filter(location_code == 132)
+#need to group everything into day
+  
+  
+uber_april_2015
 ```
 
 for finding the location of the airport, try using PULocationID in the "yellow" taxi data
