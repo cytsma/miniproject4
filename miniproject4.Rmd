@@ -5,21 +5,8 @@ date: "April 27, 2018"
 output: html_document
 ---
 
-  A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known one being "Uber." 
-  
-#Background
-  Uber is a peer-to-peer ridesharing, food delivery, and transportation network company with operations in 633 cities worldwide. It was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business insider.
-  A multitude of recent articles claim that businesses like Uber are putting financial stresses on Taxi drivers. Forbes Business claims that the hourly earnings of Uber drivers are 23.68 dollars and the hourly earnings of taxi drivers are 12.54 dollars. This does not consider external side costs. For example, that a taxi driver must pay to have taxi certificate of compliance. 
-  
-#Our Research
-
-
-#Future Aspects
-  In the future we would like to compare how many taxis were hailed in 2009 versus 2015 when Uber
-
-  Resources: 
-  http://www.businessinsider.com/history-of-uber-and-its-rise-to-become-the-most-valuable-startup-in-the-world-2015-9
-  https://www.forbes.com/sites/niallmccarthy/2016/11/28/fare-deal-how-the-hourly-earnings-of-uber-and-taxi-drivers-measure-up-infographic/#4841d2a1689a
+##
+  A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business insider. 
 
 ***COMPARING JFK AND EWR IN APRIL 2017***
 
@@ -33,7 +20,8 @@ library(tidyverse)
 library(mdsr)
 library(RMySQL)
 nyctaxi <- dbConnect_scidb(dbname = "nyctaxi")
-airlines <- dbConnect_scidb(dbname = "airlines")
+flights_2017 <- read.csv("./CAI_IS_SMELLY.csv")
+load("./planes.rda")
 ```
 
 Sofia goals: gathering Uber and lyft info
@@ -99,18 +87,15 @@ most_avg_month <- popular_months %>%
 ```
 
 ```{r, label = "get flight info"}
-flights <- airlines %>%
-  dbGetQuery("SELECT f.day, f.dest, p.seats FROM airlines.flights f
-INNER JOIN airlines.planes p
-	ON p.tailnum = f.tailnum
-WHERE f.year = 2017
-AND f.month = 4
-AND f.dest IN ('JFK', 'EWR');")
+flights_2017 <- flights_2017 %>%
+  filter(DEST %in% c("JFK", "EWR")) %>%
+  left_join(planes, by = c(TAIL_NUM == tailnum))
+
 ```
 
 ```{r, label = "max number of people leaving per day"}
-people_per_day <- flights %>% 
-  group_by(dest, day) %>%
+people_per_day <- flights_2017 %>% 
+  group_by(DEST, ) %>%
   summarize(num_people = sum(seats))
 
 ewr_people <- people_per_day %>%
