@@ -36,12 +36,8 @@ uber_jfk_april <- read.csv("./uber-raw-data-april153.csv")
 uber_jfk_april <- uber_jfk_april %>%
   rename(location_code = `X255`) %>%
   rename(day = `X4.1.15.0.02`)%>%
-  filter(location_code == 132) %>%
+  filter(location_code == 132)
   #split the day column and get rid of it
-  
-
-uber_april_2015
-
 #need to group everything into day
 #but the column also has time of day
 #just want the number per day
@@ -67,6 +63,8 @@ THEN: analyze percentage of people being picked up vs number of people leaving a
   -delineate by taxi and uber for 2015 and compare to see if percentage of people picked up by taxi went down
 
 ```{r, label = "find most average flight month"}
+airlines <- dbConnect_scidb(dbname = "airlines")
+
 popular_months <- airlines %>%
   dbGetQuery("SELECT month, SUM(1) AS sum
 FROM airlines.flights
