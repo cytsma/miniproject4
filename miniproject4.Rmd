@@ -104,8 +104,26 @@ AND f.dest IN ('JFK', 'EWR');")
 
 ```{r, label = "max number of people leaving per day"}
 people_per_day <- flights %>% 
-  group_by(year, day) %>%
-  summarize(num_people = sum(seats)) 
+  group_by(dest, year, day) %>%
+  summarize(num_people = sum(seats))
+
+ewr_people <- people_per_day %>%
+  filter(dest == "EWR")
+
+jfk_people <- people_per_day %>%
+  filter(dest == "JFK")
+```
+
+```{r}
+#TEST PLOT
+ewr_plot <- ggplot(data = ewr_people, aes(x = day, y = num_people)) +
+  geom_line(data = (ewr_people %>% filter(year == 2015))) +
+  geom_line(data = (ewr_people %>% filter(year == 2009)), color = "red") +
+  theme(panel.grid = element_blank(),
+        panel.background = element_blank()) +
+  scale_fill_manual = ("")
+
+ewr_plot
 ```
 
 ```{}
