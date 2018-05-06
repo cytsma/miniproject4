@@ -113,7 +113,7 @@ ewr_plot <- ggplot(data = ewr_people, aes(x = day, y = num_people)) +
   geom_line() +
   theme(panel.grid = element_blank(),
         panel.background = element_blank()),
-        title = element_text("Newark")
+        title = element_text("Newark"))
 
 ewr_plot
 ```
