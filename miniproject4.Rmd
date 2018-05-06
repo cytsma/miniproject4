@@ -4,6 +4,10 @@ author: "Cai Ytsma, Juliane Bombosch, Sofia Salcedo"
 date: "April 27, 2018"
 output: html_document
 ---
+
+##
+  A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business insider. 
+
 COMPARING APRIL 2005 and APRIL 2015
 
 JFK = 132
@@ -34,13 +38,16 @@ uber_jfk_april <- uber_jfk_april %>%
   filter(location_code == 132) %>%
   #split the day column and get rid of it
   
-  
+
+uber_april_2015
+
 #need to group everything into day
 #but the column also has time of day
 #just want the number per day
 
   
 uber_jfk_april
+
 ```
 
 for finding the location of the airport, try using PULocationID in the "yellow" taxi data
@@ -112,5 +119,5 @@ ewr_plot <- ggplot(data = ewr_people, aes(x = day, y = num_people)) +
 ewr_plot
 ```
 
-
+```{}
 
