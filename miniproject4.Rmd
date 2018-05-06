@@ -6,7 +6,14 @@ output: html_document
 ---
 
 ##
-  A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business insider. 
+  A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known one being "Uber." 
+  
+  Uber is a peer-to-peer ridesharing, food delivery, and transportation network company with operations in 633 cities worldwide. It was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business insider.
+  A multitude of recent articles claim that businesses like Uber are putting financial stresses on Taxi drivers. Forbes Business claims that the hourly earnings of Uber drivers are $23.68
+  
+  Resources: 
+  http://www.businessinsider.com/history-of-uber-and-its-rise-to-become-the-most-valuable-startup-in-the-world-2015-9
+  https://www.forbes.com/sites/niallmccarthy/2016/11/28/fare-deal-how-the-hourly-earnings-of-uber-and-taxi-drivers-measure-up-infographic/#4841d2a1689a
 
 COMPARING APRIL 2005 and APRIL 2015
 
