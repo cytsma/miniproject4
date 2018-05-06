@@ -87,31 +87,31 @@ most_avg_month <- popular_months %>%
 ```
 
 ```{r, label = "get flight info"}
-flights_2017 <- flights_2017 %>%
+ny_flights_2017 <- flights_2017 %>%
   filter(DEST %in% c("JFK", "EWR")) %>%
-  left_join(planes, by = c(TAIL_NUM == tailnum))
-
+  mutate(tailnum = TAIL_NUM) %>%
+  inner_join(planes, by = "tailnum") %>%
+  select(DAY_OF_MONTH, DAY_OF_WEEK, DEST, seats)
 ```
 
 ```{r, label = "max number of people leaving per day"}
-people_per_day <- flights_2017 %>% 
-  group_by(DEST, ) %>%
+people_per_day <- ny_flights_2017 %>% 
+  group_by(DEST, DAY_OF_MONTH) %>%
   summarize(num_people = sum(seats))
 
 ewr_people <- people_per_day %>%
-  filter(dest == "EWR")
+  filter(DEST == "EWR")
 
 jfk_people <- people_per_day %>%
-  filter(dest == "JFK")
+  filter(DEST == "JFK")
 ```
 
 ```{r}
 #TEST PLOT
-ewr_plot <- ggplot(data = ewr_people, aes(x = day, y = num_people)) +
+ewr_plot <- ggplot(data = ewr_people, aes(x = DAY_OF_MONTH, y = num_people)) +
   geom_line() +
   theme(panel.grid = element_blank(),
-        panel.background = element_blank(),
-        title = element_text("Newark"))
+        panel.background = element_blank())
 
 ewr_plot
 ```
