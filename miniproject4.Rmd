@@ -75,7 +75,7 @@ most_avg_month <- popular_months %>%
 
 ```{r, label = "get flight info"}
 flights <- airlines %>%
-  dbGetQuery("SELECT f.*, p.seats FROM airlines.flights f
+  dbGetQuery("SELECT f.year, f.day, f.tailnum, p.seats FROM airlines.flights f
 INNER JOIN airlines.planes p
 	ON p.tailnum = f.tailnum
 WHERE f.year IN (2009, 2015)
