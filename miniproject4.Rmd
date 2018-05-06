@@ -5,12 +5,18 @@ date: "April 27, 2018"
 output: html_document
 ---
 
-##
   A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known one being "Uber." 
   
+#Background
   Uber is a peer-to-peer ridesharing, food delivery, and transportation network company with operations in 633 cities worldwide. It was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business insider.
-  A multitude of recent articles claim that businesses like Uber are putting financial stresses on Taxi drivers. Forbes Business claims that the hourly earnings of Uber drivers are $23.68
+  A multitude of recent articles claim that businesses like Uber are putting financial stresses on Taxi drivers. Forbes Business claims that the hourly earnings of Uber drivers are 23.68 dollars and the hourly earnings of taxi drivers are 12.54 dollars. This does not consider external side costs. For example, that a taxi driver must pay to have taxi certificate of compliance. 
   
+#Our Research
+
+
+#Future Aspects
+  In the future we would like to compare 
+
   Resources: 
   http://www.businessinsider.com/history-of-uber-and-its-rise-to-become-the-most-valuable-startup-in-the-world-2015-9
   https://www.forbes.com/sites/niallmccarthy/2016/11/28/fare-deal-how-the-hourly-earnings-of-uber-and-taxi-drivers-measure-up-infographic/#4841d2a1689a
@@ -120,8 +126,7 @@ ewr_plot <- ggplot(data = ewr_people, aes(x = day, y = num_people)) +
   geom_line(data = (ewr_people %>% filter(year == 2015))) +
   geom_line(data = (ewr_people %>% filter(year == 2009)), color = "red") +
   theme(panel.grid = element_blank(),
-        panel.background = element_blank()) +
-  scale_fill_manual = ("")
+        panel.background = element_blank()) 
 
 ewr_plot
 ```
