@@ -78,7 +78,7 @@ flights <- airlines %>%
   dbGetQuery("SELECT f.*, p.seats FROM airlines.flights f
 INNER JOIN airlines.planes p
 	ON p.tailnum = f.tailnum
-WHERE f.year IN (2005, 2015)
+WHERE f.year IN (2009, 2015)
 AND f.month = 4
 AND f.dest IN ('JFK', 'EWR');")
 ```
