@@ -27,7 +27,9 @@ What am I trying to get out of that?
 - there's nothing in the tables that has lyft or uber data, the rows just say "null"
 
 ```{r}
-https://raw.githubusercontent.com/fivethirtyeight/uber-tlc-foil-response/master/uber-trip-data/uber-raw-data-apr14.csv
+uber_april_2015 <- read.csv("./uber-raw-data-april153.csv")
+head(uber_april_2015)
+
 ```
 
 for finding the location of the airport, try using PULocationID in the "yellow" taxi data
@@ -44,6 +46,7 @@ FROM airlines.flights
 WHERE dest = 'JFK'
 GROUP BY month
 ORDER BY sum DESC;")
+
 
 deviation <- popular_months %>%
   summarize(mean = sum(sum)/12)
