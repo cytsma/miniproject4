@@ -85,7 +85,7 @@ AND f.dest IN ('JFK', 'EWR');")
 
 ```{r, label = "max number of people leaving per day"}
 people_per_day <- flights %>% 
-  group_by(year, month, day) %>%
+  group_by(year, day) %>%
   summarize(num_people = sum(seats)) 
 ```
 
