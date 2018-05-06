@@ -6,6 +6,7 @@ output: html_document
 ---
 COMPARING JANUARY 2005 and JANUARY 2015
 
+
 Using taxi and plane data, joining databases? To see connections between taxi and plane, in the shadow of ride sharing services.
 
 
