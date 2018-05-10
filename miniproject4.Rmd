@@ -32,13 +32,13 @@ UBER DATA
 uber_jfk_jan <- uber_jan %>%
   filter(locationID == 132) %>%
   group_by(day) %>%
-  summarise(rides_per_day = n()) 
+  summarise(num = n()) 
 
 #newark
 uber_ewr_jan <- uber_jan %>%
   filter(locationID == 1) %>%
   group_by(day) %>%
-  summarise(rides_per_day = n())
+  summarise(num = n())
 ```
 
 AIRPORT DATA
