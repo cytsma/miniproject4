@@ -24,11 +24,7 @@ flights_2017 <- read.csv("./CAI_IS_SMELLY.csv")
 load("./planes.rda")
 ```
 
-Sofia goals: gathering Uber and lyft info
-1. create a database that has the dates of the information from Uber and lyft info
-What am I trying to get out of that? 
-- how many trips were made per day for each
-
+Trying to find Uber data for 2017
 
 ```{r}
 uber_jfk_april <- read.csv("./uber-raw-data-april153.csv")
@@ -42,9 +38,7 @@ uber_jfk_april <- uber_jfk_april %>%
 #but the column also has time of day
 #just want the number per day
 
-  
 uber_jfk_april
-
 ```
 
 for finding the location of the airport, try using PULocationID in the "yellow" taxi data
