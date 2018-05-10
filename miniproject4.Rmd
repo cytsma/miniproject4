@@ -112,7 +112,8 @@ jfk_people <- people_per_day %>%
 ewr_plot <- ggplot(data = ewr_people, aes(x = day, y = num_people)) +
   geom_line() +
   theme(panel.grid = element_blank(),
-        panel.background = element_blank())
+        panel.background = element_blank()) +
+  geom_bar(data = uber_ewr_jan)
 
 ewr_plot
 ```
