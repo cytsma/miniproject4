@@ -32,7 +32,8 @@ uber_jfk_jan <- read.csv("./jan2015uber.csv")
 uber_jfk_jan <- uber_jfk_jan %>%
   filter(locationID == 132) %>%
   group_by(PickUp) %>%
-  sum(PickUp == "4/1/15")
+  #sum(PickUp == "4/1/15") %>%
+  summarise(num_rides = n())
   
 
 #what i have now is a space between, but want it to be in two columns
