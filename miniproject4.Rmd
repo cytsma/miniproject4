@@ -34,7 +34,7 @@ uber_jfk_jan <- uber_jfk_jan %>%
 
 ggplot(uber_jfk_jan, aes(x = Date, y = rides_per_day)) +
   geom_point()
-uber_jfk_jan #can also print the data frame later if necessary
+
 ```
 
 ```{r}
@@ -47,7 +47,7 @@ uber_ewr_jan <- uber_ewr_jan %>%
 
 ggplot(uber_ewr_jan, aes(x = Date, y = rides_per_day)) +
   geom_point()
-uber_ewr_jan #can also print the data frame later if necessary
+
 
 ```
 for finding the location of the airport, try using PULocationID in the "yellow" taxi data
