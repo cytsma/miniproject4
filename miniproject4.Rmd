@@ -19,34 +19,38 @@ Using taxi and plane data, joining databases? To see connections between taxi an
 library(tidyverse)
 library(mdsr)
 library(RMySQL)
+library(ggplot2)
 nyctaxi <- dbConnect_scidb(dbname = "nyctaxi")
 flights_2017 <- read.csv("./CAI_IS_SMELLY.csv")
 load("./planes.rda")
 ```
-
-Trying to find Uber data for 2017
 
 ```{r}
 uber_jfk_jan <- read.csv("./jan2015uber.csv")
 
 uber_jfk_jan <- uber_jfk_jan %>%
   filter(locationID == 132) %>%
-  group_by(PickUp) %>%
-  #sum(PickUp == "4/1/15") %>%
-  summarise(num_rides = n())
-  
+  group_by(Date) %>%
+  summarise(rides_per_day = n()) 
 
-#what i have now is a space between, but want it to be in two columns
-  
-  
-  #split the day column and get rid of it
-#need to group everything into day
-#but the column also has time of day
-#just want the number per day
-
-uber_jfk_jan
+ggplot(uber_jfk_jan, aes(x = Date, y = rides_per_day)) +
+  geom_point()
+uber_jfk_jan #can also print the data frame later if necessary
 ```
 
+```{r}
+uber_ewr_jan <- read.csv("./jan2015uber.csv")
+
+uber_ewr_jan <- uber_ewr_jan %>%
+  filter(locationID == 1) %>%
+  group_by(Date) %>%
+  summarise(rides_per_day = n())
+
+ggplot(uber_ewr_jan, aes(x = Date, y = rides_per_day)) +
+  geom_point()
+uber_ewr_jan #can also print the data frame later if necessary
+
+```
 for finding the location of the airport, try using PULocationID in the "yellow" taxi data
 
 ----------
