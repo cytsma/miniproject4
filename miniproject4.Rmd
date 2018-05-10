@@ -43,7 +43,7 @@ uber_ewr_jan <- uber_jan %>%
 
 AIRPORT DATA
 ```{r, label = "get flight info" warning = FALSE echo = FALSE}
-ny_flights_2017 <- airlines %>%
+ny_flights_jan <- airlines %>%
   dbGetQuery("SELECT f.day, f.dest, p.seats FROM airlines.flights f
 INNER JOIN airlines.planes p
 	ON p.tailnum = f.tailnum
@@ -53,24 +53,27 @@ AND f.dest in ('JFK', 'EWR');")
 ```
 
 ```{r, label = "max number of people leaving per day", echo = FALSE, warning = FALSE}
-people_per_day <- ny_flights_2017 %>% 
+people_per_day <- ny_flights_jan %>% 
   group_by(dest, day) %>%
-  summarize(num_people = sum(seats))
+  summarize(num_people = sum(seats)) %>%
+  ungroup()
 
 ewr_people <- people_per_day %>%
-  filter(dest == "EWR")
+  filter(dest == "EWR") %>%
+  select(-dest)
 
 jfk_people <- people_per_day %>%
-  filter(dest == "JFK")
+  filter(dest == "JFK") %>%
+  select(-dest)
 ```
 
 PLOTS
 ```{r}
-ewr_plot <- ggplot(data = ewr_people, aes(x = day, y = num_people)) +
-  geom_line() +
+ewr_plot <- ggplot(aes(x = day, y = num)) +
+  geom_line(data = ewr_people) +
+  geom_bar(data = uber_ewr_jan) +
   theme(panel.grid = element_blank(),
-        panel.background = element_blank()) +
-  geom_bar(data = uber_ewr_jan)
+        panel.background = element_blank())
 
 ewr_plot
 ```
