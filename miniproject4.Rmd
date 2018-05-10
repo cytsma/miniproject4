@@ -27,18 +27,23 @@ load("./planes.rda")
 Trying to find Uber data for 2017
 
 ```{r}
-uber_jfk_april <- read.csv("./uber-raw-data-april153.csv")
+uber_jfk_jan <- read.csv("./jan2015uber.csv")
 
-uber_jfk_april <- uber_jfk_april %>%
-  rename(location_code = `X255`) %>%
-  rename(day = `X4.1.15.0.02`)%>%
-  filter(location_code == 132)
+uber_jfk_jan <- uber_jfk_jan %>%
+  filter(locationID == 132) %>%
+  group_by(PickUp) %>%
+  sum(PickUp == "4/1/15")
+  
+
+#what i have now is a space between, but want it to be in two columns
+  
+  
   #split the day column and get rid of it
 #need to group everything into day
 #but the column also has time of day
 #just want the number per day
 
-uber_jfk_april
+uber_jfk_jan
 ```
 
 for finding the location of the airport, try using PULocationID in the "yellow" taxi data
