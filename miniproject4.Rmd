@@ -8,7 +8,7 @@ output: html_document
 ##
   A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business insider. 
 
-***COMPARING JFK AND EWR IN APRIL 2017***
+***COMPARING JFK AND EWR IN JANUARY 2017***
 
 JFK = 132
 Using taxi and plane data, joining databases? To see connections between taxi and plane, in the shadow of ride sharing services.
@@ -20,8 +20,7 @@ library(tidyverse)
 library(mdsr)
 library(RMySQL)
 nyctaxi <- dbConnect_scidb(dbname = "nyctaxi")
-flights_2017 <- read.csv("./CAI_IS_SMELLY.csv")
-load("./planes.rda")
+airlines <- dbConnect_scidb(dbname = "airlines")
 ```
 
 Trying to find Uber data for 2017
@@ -62,51 +61,51 @@ THEN: analyze percentage of people being picked up vs number of people leaving a
 
   -delineate by taxi and uber for 2015 and compare to see if percentage of people picked up by taxi went down
 
-```{r, label = "find most average flight month"}
-airlines <- dbConnect_scidb(dbname = "airlines")
 
-popular_months <- airlines %>%
-  dbGetQuery("SELECT month, SUM(1) AS sum
-FROM airlines.flights
-WHERE dest = 'JFK'
-GROUP BY month
-ORDER BY sum DESC;")
+#popular_months <- airlines %>%
+#  dbGetQuery("SELECT month, SUM(1) AS sum
+#FROM airlines.flights
+#WHERE dest = 'JFK'
+#GROUP BY month
+#ORDER BY sum DESC;")
 
 
-deviation <- popular_months %>%
-  summarize(mean = sum(sum)/12)
+#deviation <- popular_months %>%
+#  summarize(mean = sum(sum)/12)
 
-mean <- deviation[[1]]
+#mean <- deviation[[1]]
 
-most_avg_month <- popular_months %>%
-  mutate(near_avg = abs((sum/mean) - 1)) %>%
-  arrange(near_avg) %>%
-  head(1)
-```
+#most_avg_month <- popular_months %>%
+#  mutate(near_avg = abs((sum/mean) - 1)) %>%
+#  arrange(near_avg) %>%
+#  head(1)
+
 
 ```{r, label = "get flight info"}
-ny_flights_2017 <- flights_2017 %>%
-  filter(DEST %in% c("JFK", "EWR")) %>%
-  mutate(tailnum = TAIL_NUM) %>%
-  inner_join(planes, by = "tailnum") %>%
-  select(DAY_OF_MONTH, DAY_OF_WEEK, DEST, seats)
+ny_flights_2017 <- airlines %>%
+  dbGetQuery("SELECT f.day, f.dest, p.seats FROM airlines.flights f
+INNER JOIN airlines.planes p
+	ON p.tailnum = f.tailnum
+WHERE f.year = 2017
+AND f.month = 1
+AND f.dest in ('JFK', 'EWR');")
 ```
 
 ```{r, label = "max number of people leaving per day"}
 people_per_day <- ny_flights_2017 %>% 
-  group_by(DEST, DAY_OF_MONTH) %>%
+  group_by(dest, day) %>%
   summarize(num_people = sum(seats))
 
 ewr_people <- people_per_day %>%
-  filter(DEST == "EWR")
+  filter(dest == "EWR")
 
 jfk_people <- people_per_day %>%
-  filter(DEST == "JFK")
+  filter(dest == "JFK")
 ```
 
 ```{r}
 #TEST PLOT
-ewr_plot <- ggplot(data = ewr_people, aes(x = DAY_OF_MONTH, y = num_people)) +
+ewr_plot <- ggplot(data = ewr_people, aes(x = day, y = num_people)) +
   geom_line() +
   theme(panel.grid = element_blank(),
         panel.background = element_blank())
