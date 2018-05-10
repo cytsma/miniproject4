@@ -2,7 +2,11 @@
 title: "Mini Project 4"
 author: "Cai Ytsma, Juliane Bombosch, Sofia Salcedo"
 date: "April 27, 2018"
-output: html_document
+output: 
+  html_document:
+    code_folding: hide
+    df_print: paged
+    
 ---
 
 ##
@@ -10,11 +14,8 @@ output: html_document
 
 ***COMPARING JFK AND EWR IN JANUARY 2017***
 
-JFK = 132
-Using taxi and plane data, joining databases? To see connections between taxi and plane, in the shadow of ride sharing services.
 
-
-```{r}
+```{r echo = FALSE warning = FALSE}
 #calling the libraries
 library(tidyverse)
 library(mdsr)
@@ -24,33 +25,32 @@ nyctaxi <- dbConnect_scidb(dbname = "nyctaxi")
 airlines <- dbConnect_scidb(dbname = "airlines")
 ```
 
-```{r}
-uber_jfk_jan <- read.csv("./jan2015uber.csv")
+```{r echo = FALSE warning = FALSE} 
+uber_jan <- read.csv("./jan2015uber.csv")
 
-uber_jfk_jan <- uber_jfk_jan %>%
+uber_jfk_jan <- uber_jan %>%
   filter(locationID == 132) %>%
   group_by(Date) %>%
   summarise(rides_per_day = n()) 
 
-ggplot(uber_jfk_jan, aes(x = Date, y = rides_per_day)) +
-  geom_point()
 
-```
 
-```{r}
 uber_ewr_jan <- read.csv("./jan2015uber.csv")
 
-uber_ewr_jan <- uber_ewr_jan %>%
+uber_ewr_jan <- uber_jan %>%
   filter(locationID == 1) %>%
   group_by(Date) %>%
   summarise(rides_per_day = n())
 
+ggplot(uber_jfk_jan, aes(x = Date, y = rides_per_day)) +
+  geom_point()
 ggplot(uber_ewr_jan, aes(x = Date, y = rides_per_day)) +
   geom_point()
 
-
 ```
-for finding the location of the airport, try using PULocationID in the "yellow" taxi data
+
+
+
 
 ----------
 Cai goals:
@@ -85,7 +85,7 @@ THEN: analyze percentage of people being picked up vs number of people leaving a
 #  head(1)
 
 
-```{r, label = "get flight info"}
+```{r, label = "get flight info" warning = FALSE echo = FALSE}
 ny_flights_2017 <- airlines %>%
   dbGetQuery("SELECT f.day, f.dest, p.seats FROM airlines.flights f
 INNER JOIN airlines.planes p
@@ -95,7 +95,7 @@ AND f.month = 1
 AND f.dest in ('JFK', 'EWR');")
 ```
 
-```{r, label = "max number of people leaving per day"}
+```{r, label = "max number of people leaving per day" echo = FALSE warning = FALSE}
 people_per_day <- ny_flights_2017 %>% 
   group_by(dest, day) %>%
   summarize(num_people = sum(seats))
