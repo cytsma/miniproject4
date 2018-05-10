@@ -6,7 +6,6 @@ output:
   html_document:
     code_folding: hide
     df_print: paged
-    
 ---
 
 ##
@@ -20,21 +19,15 @@ output:
 library(tidyverse)
 library(mdsr)
 library(RMySQL)
-library(ggplot2)
+
+#define databases
 nyctaxi <- dbConnect_scidb(dbname = "nyctaxi")
 airlines <- dbConnect_scidb(dbname = "airlines")
+uber_jan <- read.csv("./jan2015uber.csv")
 ```
-
-
-```{r, echo = FALSE, warning = FALSE} 
-#reads the csv and takes it to a database called "uber_jan"
-
 
 UBER DATA
 ```{r echo = FALSE warning = FALSE} 
-
-uber_jan <- read.csv("./jan2015uber.csv")
-
 #jfk
 uber_jfk_jan <- uber_jan %>%
   filter(locationID == 132) %>%
@@ -46,59 +39,10 @@ uber_ewr_jan <- uber_jan %>%
   filter(locationID == 1) %>%
   group_by(day) %>%
   summarise(rides_per_day = n())
-<<<<<<< HEAD
-
-#plots
-ggplot(uber_jfk_jan, aes(x = day, y = rides_per_day)) +
-  geom_point()
-ggplot(uber_ewr_jan, aes(x = day, y = rides_per_day)) +
-  geom_point()
-
-```
-
-
-
-
-----------
-Cai goals:
-
-OVERALL GRAPH: line showing max number of people leaving per day
-
-underneath: stacked bar graph to see if number of people getting rides matches number of people leaving airport
-
-within bar - colors corresponding to taxi/uber to see which one has the majority
-
-THEN: analyze percentage of people being picked up vs number of people leaving airport
-
-  -delineate by taxi and uber for 2015 and compare to see if percentage of people picked up by taxi went down
-
-
-#popular_months <- airlines %>%
-#  dbGetQuery("SELECT month, SUM(1) AS sum
-#FROM airlines.flights
-#WHERE dest = 'JFK'
-#GROUP BY month
-#ORDER BY sum DESC;")
-
-
-#deviation <- popular_months %>%
-#  summarize(mean = sum(sum)/12)
-
-#mean <- deviation[[1]]
-
-#most_avg_month <- popular_months %>%
-#  mutate(near_avg = abs((sum/mean) - 1)) %>%
-#  arrange(near_avg) %>%
-#  head(1)
-
-
-```{r, label = "get flight info", warning = FALSE, echo = FALSE}
-
 ```
 
 AIRPORT DATA
 ```{r, label = "get flight info" warning = FALSE echo = FALSE}
-
 ny_flights_2017 <- airlines %>%
   dbGetQuery("SELECT f.day, f.dest, p.seats FROM airlines.flights f
 INNER JOIN airlines.planes p
@@ -140,7 +84,6 @@ calculated most average month
 #WHERE dest = 'JFK'
 #GROUP BY month
 #ORDER BY sum DESC;")
-
 
 #deviation <- popular_months %>%
 #  summarize(mean = sum(sum)/12)
