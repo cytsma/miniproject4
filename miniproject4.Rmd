@@ -103,7 +103,7 @@ ggplot(data = total_df, aes(x = day)) +
   scale_fill_manual("Ride Type", values = c("#ebac00", "black")) +
   theme(panel.grid = element_blank(),
         panel.background = element_blank(),
-        text = element_text(family = "Calibri")) +
+        text = element_text(family = "Times")) +
   scale_y_continuous("Number of Rides") +
   scale_x_continuous("Day") +
   facet_wrap(~airport, ncol = 1, labeller = as_labeller(c("EWR" = "Newark Liberty International Airport", "JFK" = "John F. Kennedy International Airport")))
