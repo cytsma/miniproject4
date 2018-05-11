@@ -26,6 +26,37 @@ library(extrafont)
 nyctaxi <- dbConnect_scidb(dbname = "nyctaxi")
 airlines <- dbConnect_scidb(dbname = "airlines")
 uber_jan <- read.csv("./jan2015uber.csv")
+j01 <- read.csv("./TaxiJan2017_o1.csv")
+j02 <- read.csv("./TaxiJan2017_o2.csv")
+j03 <- read.csv("./TaxiJan2017_o3.csv")
+j04 <- read.csv("./TaxiJan2017_o4.csv")
+j05 <- read.csv("./TaxiJan2017_o5.csv")
+j06 <- read.csv("./TaxiJan2017_o6.csv")
+j07 <- read.csv("./TaxiJan2017_o7.csv")
+j08 <- read.csv("./TaxiJan2017_o8.csv")
+j09 <- read.csv("./TaxiJan2017_o9.csv")
+j10 <- read.csv("./TaxiJan2017_10.csv")
+j11 <- read.csv("./TaxiJan2017_11.csv")
+j12 <- read.csv("./TaxiJan2017_12.csv")
+j13 <- read.csv("./TaxiJan2017_13.csv")
+j14 <- read.csv("./TaxiJan2017_14.csv")
+j15 <- read.csv("./TaxiJan2017_15.csv")
+j16 <- read.csv("./TaxiJan2017_16.csv")
+j17 <- read.csv("./TaxiJan2017_17.csv")
+j18 <- read.csv("./TaxiJan2017_18.csv")
+j19 <- read.csv("./TaxiJan2017_19.csv")
+j20 <- read.csv("./TaxiJan2017_20.csv")
+j21 <- read.csv("./TaxiJan2017_21.csv")
+j22 <- read.csv("./TaxiJan2017_22.csv")
+j23 <- read.csv("./TaxiJan2017_23.csv")
+j24 <- read.csv("./TaxiJan2017_24.csv")
+j25 <- read.csv("./TaxiJan2017_25.csv")
+j26 <- read.csv("./TaxiJan2017_26.csv")
+j27 <- read.csv("./TaxiJan2017_27.csv")
+j28 <- read.csv("./TaxiJan2017_28.csv")
+j29 <- read.csv("./TaxiJan2017_29.csv")
+j30 <- read.csv("./TaxiJan2017_30.csv")
+j31 <- read.csv("./TaxiJan2017_31.csv")
 ```
 
 UBER DATA
@@ -47,6 +78,8 @@ uber_ewr_jan <- uber_jan %>%
 temp <- uber_jan %>%
   filter(locationID == 132 | locationID == 1)
 ```
+
+
 
 AIRPORT DATA
 ```{r, label = "get flight info" warning = FALSE echo = FALSE}
@@ -105,6 +138,11 @@ jfk_plot
 ewr_plot
 ```
 
+```{r}
+
+
+```
+
 
 OLD STUFF:
 calculated most average month
@@ -124,3 +162,21 @@ calculated most average month
 #  mutate(near_avg = abs((sum/mean) - 1)) %>%
 #  arrange(near_avg) %>%
 #  head(1)
+
+In trying to turn a string into just a day of a filtered month in the data package *nyctaxi yellow #2017* I couldn't figure out a way to select a string from **tpep_pickup_datetime** without losing all of the data atatched to it or to make a function that would be able to delete the first and last part of the string only leaving the date. The package was also so big that even with 50,000 rows I was not able to have all the days of the month included.
+#SELECT * 
+#FROM nyctaxi.yellow
+#WHERE tpep_pickup_datetime LIKE  '%2017-03%';
+
+#SELECT
+#SUBSTRING_INDEX('2017-03-09 21:30:11', ' ' , -1)
+#;
+#SELECT
+#SUBSTRING_INDEX('09 21:30:11', ' ' , 1)
+#;
+#SELECT
+#SUBSTRING_INDEX('09', '0', -1)
+#;
+#SELECT RIGHT('2017-03-09 21:30:11', 11) 
+#;
+#SELECT LEFT('09 21:30:11', 2);
