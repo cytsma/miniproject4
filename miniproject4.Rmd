@@ -34,7 +34,7 @@ Because of the fierce competition, other airports, like LAX in Los Angeles, have
 ***COMPARING JFK AND EWR IN JANUARY 2017***
 
 
-```{r, echo = FALSE, warning = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 #calling the libraries
 library(tidyverse)
 library(mdsr)
@@ -102,7 +102,7 @@ uber_rides <- uber_jfk_jan %>%
 ```
 TAXI
 
-```{r, label = "total taxi rides from JFK per day" warning = FALSE echo= FALSE}
+```{r, label = "total taxi rides from JFK per day", warning = FALSE, echo= FALSE}
 total_rides_j01 <- j01 %>%
   nrow()
 
@@ -118,8 +118,8 @@ totalrides_day <- function(file){
 
 lapply(filename_list, totalrides_day)
 
-
 ```
+
 
 
 AIRPORT DATA
