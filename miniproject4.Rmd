@@ -99,7 +99,7 @@ total_df <- people_per_day %>%
 ```
 
 MAKE PLOT
-```{r, echo = FALSE, warning = FALSE}
+```{r, echo = FALSE}
 ggplot(data = total_df, aes(x = day)) +
   geom_bar(aes(y = n_rides, fill = ride_type), stat = "identity") +
   geom_line(aes(y = flight_qual)) +
@@ -110,6 +110,17 @@ ggplot(data = total_df, aes(x = day)) +
     scale_x_continuous("Day") +
     ggtitle("January 2017") +
   facet_wrap(~airport, ncol = 1)
+```
+
+COMPARE UBER/TAXI BY NUMBERS
+```{r}
+comparison <- total_df %>%
+  select(n_rides, ride_type) %>%
+  filter(!is.na(ride_type)) %>%
+  group_by(ride_type) %>%
+  summarize(N = sum(n_rides)) %>%
+  ungroup() %>%
+  mutate(prop = N / sum(N))
 ```
 
 OLD STUFF:
