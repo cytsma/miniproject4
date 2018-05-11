@@ -104,6 +104,7 @@ total_rides_j01 <- j01 %>%
   nrow()
 
 total_rides_j01
+filename_list <- c("", "", "", "",)
 
 totalrides_day <- function(filename_list){
   df <- read.csv(file)
