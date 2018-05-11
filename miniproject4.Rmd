@@ -49,9 +49,8 @@ taxi_rides <- read.csv("./taxi_rides.csv") %>%
   mutate(ride_type = "taxi")
 ```
 
-
+UBER DATA
 ```{r, echo = FALSE, warning = FALSE} 
-#uber data
 #jfk
 uber_jfk_jan <- uber_jan %>%
   filter(locationID == 132) %>%
@@ -72,9 +71,8 @@ uber_rides <- uber_jfk_jan %>%
   mutate(ride_type = "uber")
 ```
 
-
+AIRPORT DATA
 ```{r, label = "get flight info", warning = FALSE, echo = FALSE}
-#flight info
 #get flight data from MySQL
 ny_flights_jan <- airlines %>%
   dbGetQuery("SELECT f.day, f.dest, p.seats FROM airlines.flights f
@@ -93,72 +91,64 @@ people_per_day <- ny_flights_jan %>%
   select(-dest)
 ```
 
-
+COMBINE DATASETS
 ```{r, echo = FALSE, warning = FALSE}
-#combining datasets
 total_df <- people_per_day %>%
   full_join(uber_rides, by = c("day", "airport")) %>%
   full_join(taxi_rides, by = c("day", "airport", "n_rides", "ride_type"))
 ```
 
-```{r, echo = FALSE}
-#plot
+MAKE PLOT
+```{r, echo = FALSE, warning = FALSE}
 ggplot(data = total_df, aes(x = day)) +
   geom_bar(aes(y = n_rides, fill = ride_type), stat = "identity") +
   geom_line(aes(y = flight_qual)) +
   theme(panel.grid = element_blank(),
         panel.background = element_blank(),
-        text = element_text(family = "Times")) +
+        text = element_text(family = "Century Schoolbook")) +
     scale_y_continuous("Number of Rides") +
     scale_x_continuous("Day") +
     ggtitle("January 2017") +
   facet_wrap(~airport, ncol = 1)
 ```
 
-```{r}
-#comparing uber to taxi
-comparison <- total_df %>%
-  select(n_rides, ride_type) %>%
-  filter(!is.na(ride_type)) %>%
-  group_by(ride_type) %>%
-  summarize(N = sum(n_rides)) %>%
-  ungroup() %>%
-  mutate(prop = N / sum(N))
-```
+#Notes About the Process:
 
-OLD STUFF:
-calculated most average month
-#popular_months <- airlines %>%
-#  dbGetQuery("SELECT month, SUM(1) AS sum
-#FROM airlines.flights
-#WHERE dest = 'JFK'
-#GROUP BY month
-#ORDER BY sum DESC;")
+**Obsticles that we came across**
+Initially, we had planned to compare uber and taxi rides hailed from Newark Airport and JFK Airport in New York. We had to improvise. We were only given taxi data for the year 2017, months January, February, and March and the only published Uber data was available for 2015. It was not possible to download and utalize the 2015 New York Taxi package because it was too big for any of our computers to open and upon inquiry, Professor Baumer told us this package was also too big for SQL. We wanted to find the most average airtraffic month using the code below. Our result was that April would have been the ideal month to compare our uber and taxi data. However, this was not possible given the aforementioned restraints  
 
-#deviation <- popular_months %>%
-#  summarize(mean = sum(sum)/12)
+  calculated most average month
+*popular_months <- airlines %>%*
+*dbGetQuery("SELECT month, SUM(1) AS sum*
+*FROM airlines.flights*
+*WHERE dest = 'JFK'*
+*GROUP BY month*
+*ORDER BY sum DESC;")*
 
-#mean <- deviation[[1]]
+*deviation <- popular_months %>%*
+*summarize(mean = sum(sum)/12)*
+*mean <- deviation[[1]]*
+*most_avg_month <- popular_months %>%*
+*mutate(near_avg = abs((sum/mean) - 1)) %>%*
+*arrange(near_avg) %>%*
+*head(1)*
 
-#most_avg_month <- popular_months %>%
-#  mutate(near_avg = abs((sum/mean) - 1)) %>%
-#  arrange(near_avg) %>%
-#  head(1)
+In analyzing the 2017 New York Taxi Yellow Data set there was one column **tpep_pickup_datetime** that had a string for each taxi ride with the format **Year-Month-Day Hour:Minute:second**. We wanted to split each string in SQL for April 2017. We were able to select one string, but we could not do so without losing all of the data attached to it, for example having a destination location. We were also unable to make a function which would delete the first and last part of the string leaving only the date in a new column. We also found that even upon filtering the package was also so big that even with 50,000 rows we was not able to have all the days of the month included. These were some of the methods that we were playing with in trying to figure this out:
+*SELECT * 
+*FROM nyctaxi.yellow*
+*WHERE tpep_pickup_datetime LIKE  '%2017-03%';*
 
-In trying to turn a string into just a day of a filtered month in the data package *nyctaxi yellow #2017* we couldn't figure out a way to select a string from **tpep_pickup_datetime** without losing all of the data atatched to it or to make a function that would be able to delete the first and last part of the string only leaving the date. The package was also so big that even with 50,000 rows we was not able to have all the days of the month included.
-#SELECT * 
-#FROM nyctaxi.yellow
-#WHERE tpep_pickup_datetime LIKE  '%2017-03%';
+*SELECT*
+*SUBSTRING_INDEX('2017-03-09 21:30:11', ' ' , -1)*
+*;*
+*SELECT*
+*SUBSTRING_INDEX('09 21:30:11', ' ' , 1)*
+*;*
+*SELECT*
+*SUBSTRING_INDEX('09', '0', -1)*
+*;*
+*SELECT RIGHT('2017-03-09 21:30:11', 11)*
+*;*
+*SELECT LEFT('09 21:30:11', 2);*
 
-#SELECT
-#SUBSTRING_INDEX('2017-03-09 21:30:11', ' ' , -1)
-#;
-#SELECT
-#SUBSTRING_INDEX('09 21:30:11', ' ' , 1)
-#;
-#SELECT
-#SUBSTRING_INDEX('09', '0', -1)
-#;
-#SELECT RIGHT('2017-03-09 21:30:11', 11) 
-#;
-#SELECT LEFT('09 21:30:11', 2);
+Instead we ran code in SQL counting the number of rows per day of January 2017, the number of rows represent the number of taxi rides. Then this was manually put into a table which represented the number of rides per day of January and had a label for the respective airport. 
