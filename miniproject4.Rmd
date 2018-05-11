@@ -107,7 +107,8 @@ people_per_day <- ny_flights_jan %>%
 COMBINE DATASETS
 ```{r, echo = FALSE, warning = FALSE}
 air_uber <- people_per_day %>%
-  full_join(uber_rides, by = c("day", "airport"))
+  full_join(uber_rides, by = c("day", "airport")) %>%
+  full_join(taxi_rides, by = c("day", "airport"))
 ```
 
 MAKE PLOT
