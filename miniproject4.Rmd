@@ -95,7 +95,7 @@ total_df <- people_per_day %>%
   full_join(taxi_rides, by = c("day", "airport", "n_rides", "ride_type"))
 ```
 
-<<<<<<< HEAD
+
 ```{r, echo = FALSE}
 #plot
 ggplot(data = total_df, aes(x = day)) +
@@ -122,7 +122,6 @@ Uber is a popular service, but is it undercutting Uber in the way that is widely
 It is important to note that data from multiple years was used. There was a restiction on what data was available because the data sets are so large. While general trends of competition between the two ride services can be measured, it is also important to note that it is not exact to compare these two data sets. 
 
 ```{r}
-#comparing uber to taxi
 #comparing number of uber to taxi rides
 
 comparison <- total_df %>%
@@ -132,10 +131,6 @@ comparison <- total_df %>%
   summarize(N = sum(n_rides)) %>%
   ungroup() %>%
   mutate(prop = N / sum(N))
-
-    ggtitle("January 2017") +
-  facet_wrap(~airport, ncol = 1)
-
 ```
 
 #Notes About the Process:
@@ -160,21 +155,20 @@ Initially, we had planned to compare uber and taxi rides hailed from Newark Airp
 *head(1)*
 
 In analyzing the 2017 New York Taxi Yellow Data set there was one column **tpep_pickup_datetime** that had a string for each taxi ride with the format **Year-Month-Day Hour:Minute:second**. We wanted to split each string in SQL for April 2017. We were able to select one string, but we could not do so without losing all of the data attached to it, for example having a destination location. We were also unable to make a function which would delete the first and last part of the string leaving only the date in a new column. We also found that even upon filtering the package was also so big that even with 50,000 rows we was not able to have all the days of the month included. These were some of the methods that we were playing with in trying to figure this out:
-*SELECT * 
-*FROM nyctaxi.yellow*
-*WHERE tpep_pickup_datetime LIKE  '%2017-03%';*
-
-*SELECT*
-*SUBSTRING_INDEX('2017-03-09 21:30:11', ' ' , -1)*
-*;*
-*SELECT*
-*SUBSTRING_INDEX('09 21:30:11', ' ' , 1)*
-*;*
-*SELECT*
-*SUBSTRING_INDEX('09', '0', -1)*
-*;*
-*SELECT RIGHT('2017-03-09 21:30:11', 11)*
-*;*
-*SELECT LEFT('09 21:30:11', 2);*
+```SELECT * 
+FROM nyctaxi.yellow
+WHERE tpep_pickup_datetime LIKE  '%2017-03%';
+SELECT
+SUBSTRING_INDEX('2017-03-09 21:30:11', ' ' , -1)
+;
+SELECT
+SUBSTRING_INDEX('09 21:30:11', ' ' , 1)
+;
+SELECT
+SUBSTRING_INDEX('09', '0', -1)
+;
+SELECT RIGHT('2017-03-09 21:30:11', 11)
+;
+SELECT LEFT('09 21:30:11', 2);```
 
 Instead we ran code in SQL counting the number of rows per day of January 2017, the number of rows represent the number of taxi rides. Then this was manually put into a table which represented the number of rides per day of January and had a label for the respective airport. 
