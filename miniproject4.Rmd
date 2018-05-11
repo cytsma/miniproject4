@@ -45,7 +45,8 @@ library(extrafont)
 nyctaxi <- dbConnect_scidb(dbname = "nyctaxi")
 airlines <- dbConnect_scidb(dbname = "airlines")
 uber_jan <- read.csv("./jan2015uber.csv")
-taxi_rides <- read.csv("./taxi_rides.csv")
+taxi_rides <- read.csv("./taxi_rides.csv") %>%
+  mutate(ride_type = "taxi")
 ```
 
 UBER DATA
