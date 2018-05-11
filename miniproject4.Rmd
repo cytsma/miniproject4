@@ -1,5 +1,5 @@
 ---
-title: "'Hail No!' Say Taxi Drivers to Uber"
+title: "'Hail No!' Say Taxis to Uber"
 author: "Cai Ytsma, Juliane Bombosch, Sofia Salcedo"
 date: "May 10, 2018"
 output: 
@@ -8,23 +8,25 @@ output:
     df_print: paged
 ---
 
-***An Introduction to Uber***
-
+#Introduction
 A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business Insider.
+
 
 Using Uber data (2015) that was available, and comparing that to taxi data, we looked for general trends related to  domestic flights out of two airports: Newark and JFK. While the taxi and airport data was recorded in January 2017, a clear pattern in preference emerges.  
 
+Using Uber data (2015) that was available, and comparing that to taxi data, we looked for general trends related to flights out of two airports: Newark and JFK. While the taxi and airport data was recorded in January 2017, a clear pattern in preference emerges.  
+
+
 Ride sharing is so successful because it’s simple and marketed as the cheaper option. This is true about long trips, but not necessarily for short trips (94% of Uber trips) and surge pricing makes this option even more expensive in comparison to taxis [Time 2014](http://time.com/3556741/uber/). 
  
-***So why is Uber the popular option?***
+#So why is Uber the popular option? 
+1. Uber uses an app instead of physically hailing a cab. For many people, this is more accessible- whether it’s because they are more comfortable with using technology or it removes the physical problem of hailing a cab (hailing a cab brings out both issues of disability as well as racial profiling on both the driver and passenger front).
 
-1. *Uber uses an app instead of physically hailing a cab.* For many people, this is more accessible- whether it’s because they are more comfortable with using technology or it removes the physical problem of hailing a cab (hailing a cab brings out both issues of disability as well as racial profiling on both the driver and passenger front).
+2. You can estimate the cost beforehand. In taxis, there is little clarity before the ride about how expensive the ride will be. While it is an estimate, passengers can see whether they are getting a surge price, how long it will take, and this information is comforting to a lot of passengers. 
 
-2. *You can estimate the cost beforehand.* In taxis, there is little clarity before the ride about how expensive the ride will be. While it is an estimate, passengers can see whether they are getting a surge price, how long it will take, and this information is comforting to a lot of passengers. 
+3. It’s faster. With the number of Uber drivers compared to taxi drivers, the wait for an Uber is shorter. And in a world where time is money, the number of minutes that you wait for a ride counts.
 
-3. *It’s faster.* With the number of Uber drivers compared to taxi drivers, the wait for an Uber is shorter. And in a world where time is money, the number of minutes that you wait for a ride counts.
-
-***How does this translate to New York City and airports?***
+**How does this translate to New York City and airports?**
 
 New York City has a lot of airports, which require a high number of taxis and ride-sharing to pick up the passengers. Two airports- Newark and John F. Kennedy can provide an example of the competition between Uber and taxis. JFK airport is 16 miles east of midtown Manhattan, located in Jamaica, Queens. Newark is 15 miles outside of New York City, 18 miles away from Midtown. This doesn’t appear to be a significant difference, but the time, and the fare dependent on that time, can be a big difference. 
 
@@ -47,7 +49,6 @@ taxi_rides <- read.csv("./taxi_rides.csv") %>%
 
 
 ```{r, echo = FALSE, warning = FALSE} 
-#uber data
 #jfk
 uber_jfk_jan <- uber_jan %>%
   filter(locationID == 132) %>%
@@ -68,9 +69,7 @@ uber_rides <- uber_jfk_jan %>%
   mutate(ride_type = "uber")
 ```
 
-
 ```{r, label = "get flight info", warning = FALSE, echo = FALSE}
-#flight info
 #get flight data from MySQL
 ny_flights_jan <- airlines %>%
   dbGetQuery("SELECT f.day, f.dest, p.seats FROM airlines.flights f
@@ -91,23 +90,22 @@ people_per_day <- ny_flights_jan %>%
 
 
 ```{r, echo = FALSE, warning = FALSE}
-#combining datasets
 total_df <- people_per_day %>%
   full_join(uber_rides, by = c("day", "airport")) %>%
   full_join(taxi_rides, by = c("day", "airport", "n_rides", "ride_type"))
 ```
 
-```{r, echo = FALSE}
-#plot
+
+```{r, echo = FALSE, warning = FALSE}
 ggplot(data = total_df, aes(x = day)) +
   geom_bar(aes(y = n_rides, fill = ride_type), stat = "identity") +
-  scale_fill_manual("Ride Type", values = c("#ebac00", "black")) +
   geom_line(aes(y = flight_qual)) +
   theme(panel.grid = element_blank(),
         panel.background = element_blank(),
-        text = element_text(family = "Calibri")) +
+        text = element_text(family = "Century Schoolbook")) +
     scale_y_continuous("Number of Rides") +
     scale_x_continuous("Day") +
+
   facet_wrap(~airport, ncol = 1, labeller = as_labeller(c("EWR" = "Newark Liberty International Airport", "JFK" = "John F. Kennedy International Airport")))
 ```
 
@@ -134,41 +132,49 @@ comparison <- total_df %>%
   summarize(N = sum(n_rides)) %>%
   ungroup() %>%
   mutate(prop = N / sum(N))
+
+    ggtitle("January 2017") +
+  facet_wrap(~airport, ncol = 1)
+
 ```
 
-OLD STUFF:
-calculated most average month
-#popular_months <- airlines %>%
-#  dbGetQuery("SELECT month, SUM(1) AS sum
-#FROM airlines.flights
-#WHERE dest = 'JFK'
-#GROUP BY month
-#ORDER BY sum DESC;")
+#Notes About the Process:
 
-#deviation <- popular_months %>%
-#  summarize(mean = sum(sum)/12)
+**Obsticles that we came across**
+Initially, we had planned to compare uber and taxi rides hailed from Newark Airport and JFK Airport in New York. We had to improvise. We were only given taxi data for the year 2017, months January, February, and March and the only published Uber data was available for 2015. It was not possible to download and utalize the 2015 New York Taxi package because it was too big for any of our computers to open and upon inquiry, Professor Baumer told us this package was also too big for SQL. We wanted to find the most average airtraffic month using the code below. Our result was that April would have been the ideal month to compare our uber and taxi data. However, this was not possible given the aforementioned restraints  
 
-#mean <- deviation[[1]]
+  calculated most average month
+*popular_months <- airlines %>%*
+*dbGetQuery("SELECT month, SUM(1) AS sum*
+*FROM airlines.flights*
+*WHERE dest = 'JFK'*
+*GROUP BY month*
+*ORDER BY sum DESC;")*
 
-#most_avg_month <- popular_months %>%
-#  mutate(near_avg = abs((sum/mean) - 1)) %>%
-#  arrange(near_avg) %>%
-#  head(1)
+*deviation <- popular_months %>%*
+*summarize(mean = sum(sum)/12)*
+*mean <- deviation[[1]]*
+*most_avg_month <- popular_months %>%*
+*mutate(near_avg = abs((sum/mean) - 1)) %>%*
+*arrange(near_avg) %>%*
+*head(1)*
 
-In trying to turn a string into just a day of a filtered month in the data package *nyctaxi yellow #2017* we couldn't figure out a way to select a string from **tpep_pickup_datetime** without losing all of the data atatched to it or to make a function that would be able to delete the first and last part of the string only leaving the date. The package was also so big that even with 50,000 rows we was not able to have all the days of the month included.
-#SELECT * 
-#FROM nyctaxi.yellow
-#WHERE tpep_pickup_datetime LIKE  '%2017-03%';
+In analyzing the 2017 New York Taxi Yellow Data set there was one column **tpep_pickup_datetime** that had a string for each taxi ride with the format **Year-Month-Day Hour:Minute:second**. We wanted to split each string in SQL for April 2017. We were able to select one string, but we could not do so without losing all of the data attached to it, for example having a destination location. We were also unable to make a function which would delete the first and last part of the string leaving only the date in a new column. We also found that even upon filtering the package was also so big that even with 50,000 rows we was not able to have all the days of the month included. These were some of the methods that we were playing with in trying to figure this out:
+*SELECT * 
+*FROM nyctaxi.yellow*
+*WHERE tpep_pickup_datetime LIKE  '%2017-03%';*
 
-#SELECT
-#SUBSTRING_INDEX('2017-03-09 21:30:11', ' ' , -1)
-#;
-#SELECT
-#SUBSTRING_INDEX('09 21:30:11', ' ' , 1)
-#;
-#SELECT
-#SUBSTRING_INDEX('09', '0', -1)
-#;
-#SELECT RIGHT('2017-03-09 21:30:11', 11) 
-#;
-#SELECT LEFT('09 21:30:11', 2);
+*SELECT*
+*SUBSTRING_INDEX('2017-03-09 21:30:11', ' ' , -1)*
+*;*
+*SELECT*
+*SUBSTRING_INDEX('09 21:30:11', ' ' , 1)*
+*;*
+*SELECT*
+*SUBSTRING_INDEX('09', '0', -1)*
+*;*
+*SELECT RIGHT('2017-03-09 21:30:11', 11)*
+*;*
+*SELECT LEFT('09 21:30:11', 2);*
+
+Instead we ran code in SQL counting the number of rows per day of January 2017, the number of rows represent the number of taxi rides. Then this was manually put into a table which represented the number of rides per day of January and had a label for the respective airport. 
