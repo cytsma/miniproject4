@@ -97,7 +97,23 @@ uber_ewr_jan <- uber_jan %>%
 uber_rides <- uber_jfk_jan %>%
   full_join(uber_ewr_jan, by = c("airport","day", "uber_ride_n"))
 ```
+TAXI
 
+```{r, label = "total taxi rides from JFK per day" warning = FALSE echo= FALSE}
+total_rides_j01 <- j01 %>%
+  nrow()
+
+total_rides_j01
+filename_list <- c("", "", "", "",)
+
+totalrides_day <- function(filename_list){
+  df <- read.csv(file)
+  df%>%
+  summarise(N = n)
+  return(temp_K)
+}
+
+```
 
 
 AIRPORT DATA
