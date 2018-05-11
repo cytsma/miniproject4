@@ -45,38 +45,7 @@ library(extrafont)
 nyctaxi <- dbConnect_scidb(dbname = "nyctaxi")
 airlines <- dbConnect_scidb(dbname = "airlines")
 uber_jan <- read.csv("./jan2015uber.csv")
-
-j01 <- read.csv("./TaxiJan2017_o1.csv")
-j02 <- read.csv("./TaxiJan2017_o2.csv")
-j03 <- read.csv("./TaxiJan2017_o3.csv")
-j04 <- read.csv("./TaxiJan2017_o4.csv")
-j05 <- read.csv("./TaxiJan2017_o5.csv")
-j06 <- read.csv("./TaxiJan2017_o6.csv")
-j07 <- read.csv("./TaxiJan2017_o7.csv")
-j08 <- read.csv("./TaxiJan2017_o8.csv")
-j09 <- read.csv("./TaxiJan2017_o9.csv")
-j10 <- read.csv("./TaxiJan2017_10.csv")
-j11 <- read.csv("./TaxiJan2017_11.csv")
-j12 <- read.csv("./TaxiJan2017_12.csv")
-j13 <- read.csv("./TaxiJan2017_13.csv")
-j14 <- read.csv("./TaxiJan2017_14.csv")
-j15 <- read.csv("./TaxiJan2017_15.csv")
-j16 <- read.csv("./TaxiJan2017_16.csv")
-j17 <- read.csv("./TaxiJan2017_17.csv")
-j18 <- read.csv("./TaxiJan2017_18.csv")
-j19 <- read.csv("./TaxiJan2017_19.csv")
-j20 <- read.csv("./TaxiJan2017_20.csv")
-j21 <- read.csv("./TaxiJan2017_21.csv")
-j22 <- read.csv("./TaxiJan2017_22.csv")
-j23 <- read.csv("./TaxiJan2017_23.csv")
-j24 <- read.csv("./TaxiJan2017_24.csv")
-j25 <- read.csv("./TaxiJan2017_25.csv")
-j26 <- read.csv("./TaxiJan2017_26.csv")
-j27 <- read.csv("./TaxiJan2017_27.csv")
-j28 <- read.csv("./TaxiJan2017_28.csv")
-j29 <- read.csv("./TaxiJan2017_29.csv")
-j30 <- read.csv("./TaxiJan2017_30.csv")
-j31 <- read.csv("./TaxiJan2017_31.csv")
+ridesJFK_perday <- read.csv("./numridesJFKJan2017.csv")
 ```
 
 UBER DATA
@@ -115,8 +84,6 @@ totalrides_day <- function(file){
   summarise(N = n)
   return(temp_K)
 }
-
-lapply(filename_list, totalrides_day)
 
 ```
 
