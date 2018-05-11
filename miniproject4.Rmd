@@ -45,6 +45,7 @@ library(extrafont)
 nyctaxi <- dbConnect_scidb(dbname = "nyctaxi")
 airlines <- dbConnect_scidb(dbname = "airlines")
 uber_jan <- read.csv("./jan2015uber.csv")
+
 j01 <- read.csv("./TaxiJan2017_o1.csv")
 j02 <- read.csv("./TaxiJan2017_o2.csv")
 j03 <- read.csv("./TaxiJan2017_o3.csv")
@@ -84,18 +85,20 @@ UBER DATA
 uber_jfk_jan <- uber_jan %>%
   filter(locationID == 132) %>%
   group_by(day) %>%
-  summarise(uber_ride_n = n()) %>%
+  summarise(n_rides = n()) %>%
   mutate(airport = "JFK")
 
 #newark
 uber_ewr_jan <- uber_jan %>%
   filter(locationID == 1) %>%
   group_by(day) %>%
-  summarise(uber_ride_n = n()) %>%
+  summarise(n_rides = n()) %>%
   mutate(airport = "EWR")
 
+#combine
 uber_rides <- uber_jfk_jan %>%
-  full_join(uber_ewr_jan, by = c("airport","day", "uber_ride_n"))
+  full_join(uber_ewr_jan, by = c("airport","day", "n_rides")) %>%
+  mutate(ride_type = "uber")
 ```
 TAXI
 
@@ -118,6 +121,7 @@ totalrides_day <- function(filename_list){
 
 AIRPORT DATA
 ```{r, label = "get flight info", warning = FALSE, echo = FALSE}
+#get flight data from MySQL
 ny_flights_jan <- airlines %>%
   dbGetQuery("SELECT f.day, f.dest, p.seats FROM airlines.flights f
 INNER JOIN airlines.planes p
@@ -125,55 +129,35 @@ INNER JOIN airlines.planes p
 WHERE f.year = 2017
 AND f.month = 1
 AND f.dest in ('JFK', 'EWR');")
-```
 
-```{r, label = "max number of people leaving per day", echo = FALSE, warning = FALSE}
+#estimate number of people leaving per day
 people_per_day <- ny_flights_jan %>% 
   group_by(dest, day) %>%
-  summarize(flight_people = sum(seats), num_flights = n()) %>%
+  summarize(n_people = sum(seats), num_flights = n()) %>%
   ungroup() %>%
-  mutate(flight_qual = flight_people / 10, airport = dest) %>%
+  mutate(flight_qual = n_people / 50, airport = dest) %>%
   select(-dest)
 ```
 
+COMBINE DATASETS
 ```{r, echo = FALSE, warning = FALSE}
 air_uber <- people_per_day %>%
   full_join(uber_rides, by = c("day", "airport"))
-
-plot <- ggplot(data = air_uber, aes(x = day)) +
-  geom_line(aes(y = flight_qual))
 ```
 
-PLOTS
-```{r, label = "make plots!", echo = FALSE, warning = FALSE}
-#JOIN ALL DATASETS! then do:
-  #geom_bar(data = RIDE_INFO, x = day, y = num_rides, fill = type, stat = "identity")
-
-base_plot <- ggplot() +
-    theme(panel.grid = element_blank(),
+MAKE PLOT
+```{r, echo = FALSE, warning = FALSE}
+ggplot(data = air_uber, aes(x = day)) +
+  geom_line(aes(y = flight_qual), alpha = 0.5) +
+  geom_bar(aes(y = n_rides, fill = ride_type), stat = "identity") +
+  theme(panel.grid = element_blank(),
         panel.background = element_blank(),
         text = element_text(family = "Century Schoolbook")) +
     scale_y_continuous("Number of Rides") +
     scale_x_continuous("Day") +
-    ggtitle("Newark Airport", subtitle = "January 2017")
-
-ewr_plot <- base_plot +
-  geom_line(data = ewr_people, aes(x = day, y = num_qual), alpha = 0.5)
-  #barplot
-
-jfk_plot<- base_plot +
-  geom_line(data = jfk_people, aes(x = day, y = num_qual), alpha = 0.5)
-  #barplot
-
-jfk_plot
-ewr_plot
+    ggtitle("January 2017") +
+  facet_wrap(~airport, ncol = 1)
 ```
-
-```{r}
-
-
-```
-
 
 OLD STUFF:
 calculated most average month
