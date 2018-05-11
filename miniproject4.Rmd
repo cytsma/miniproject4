@@ -9,12 +9,12 @@ output:
 ---
 
 ##
-  A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business Insider.
+A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business Insider.
   
- Ride sharing is so successful because it’s simple and marketed as the cheaper option. This is true about long trips, but not necessarily for short trips (94% of Uber trips) and surge pricing makes this option even more expensive in comparison to taxis. 
- 
-http://time.com/3556741/uber/
+Using Uber data (2015) that was available, and comparing that to taxi data, we looked for general trends related to flights out of two airports: Newark and JFK. While the taxi and airport data was recorded in January 2017, a clear pattern in preference emerges.  
 
+Ride sharing is so successful because it’s simple and marketed as the cheaper option. This is true about long trips, but not necessarily for short trips (94% of Uber trips) and surge pricing makes this option even more expensive in comparison to taxis [Time 2014](http://time.com/3556741/uber/). 
+ 
 So why is Uber the popular option? 
 1.Uber uses an app instead of physically hailing a cab. For many people, this is more accessible- whether it’s because they are more comfortable with using technology or it removes the physical problem of hailing a cab (hailing a cab brings out both issues of disability as well as racial profiling on both the driver and passenger front).
 
@@ -28,7 +28,7 @@ How does this translate to New York City and airports?
 
 New York City has a lot of airports, which require a high number of taxis and ride-sharing to pick up the passengers. Two airports- Newark and John F. Kennedy can provide an example of the competition between Uber and taxis. JFK airport is 16 miles east of midtown Manhattan, located in Jamaica, Queens. Newark is 15 miles outside of New York City, 18 miles away from Midtown. This doesn’t appear to be a significant difference, but the time, and the fare dependent on that time, can be a big difference. 
 
-Because of the fierce competition, other airports, like LAX in Los Angeles, have put restrictions on ride-sharing services that are not present for taxis in the same area. These restrictions include only being allowed to drive and pick up passengers in certain areas as well as not being allowed to wait for passengers. These restrictions make taxis the preferred method at LAX, unlike the rest of the city.
+Because of the fierce competition, other airports, like LAX in Los Angeles, have put restrictions on ride-sharing services that are not present for taxis in the same area. These restrictions include only being allowed to drive and pick up passengers in certain areas as well as not being allowed to wait for passengers. These restrictions make taxis the preferred method at LAX, unlike the rest of the city. Similarly, in 2016, Newark banned the use of Uber, preferring to support the licensed and regulated taxi drivers.
 
 
 ***COMPARING JFK AND EWR IN JANUARY 2017***
@@ -69,8 +69,8 @@ uber_rides <- uber_jfk_jan %>%
   full_join(uber_ewr_jan, by = c("airport","day", "n_rides")) %>%
   mutate(ride_type = "uber")
 ```
-TAXI
 
+TAXI
 ```{r, label = "total taxi rides from JFK per day", warning = FALSE, echo= FALSE}
 total_rides_j01 <- j01 %>%
   nrow()
@@ -147,7 +147,7 @@ calculated most average month
 #  arrange(near_avg) %>%
 #  head(1)
 
-In trying to turn a string into just a day of a filtered month in the data package *nyctaxi yellow #2017* I couldn't figure out a way to select a string from **tpep_pickup_datetime** without losing all of the data atatched to it or to make a function that would be able to delete the first and last part of the string only leaving the date. The package was also so big that even with 50,000 rows I was not able to have all the days of the month included.
+In trying to turn a string into just a day of a filtered month in the data package *nyctaxi yellow #2017* we couldn't figure out a way to select a string from **tpep_pickup_datetime** without losing all of the data atatched to it or to make a function that would be able to delete the first and last part of the string only leaving the date. The package was also so big that even with 50,000 rows we was not able to have all the days of the month included.
 #SELECT * 
 #FROM nyctaxi.yellow
 #WHERE tpep_pickup_datetime LIKE  '%2017-03%';
