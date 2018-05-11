@@ -45,7 +45,7 @@ library(extrafont)
 nyctaxi <- dbConnect_scidb(dbname = "nyctaxi")
 airlines <- dbConnect_scidb(dbname = "airlines")
 uber_jan <- read.csv("./jan2015uber.csv")
-ridesJFK_perday <- read.csv("./numridesJFKJan2017.csv")
+taxi_rides <- read.csv("./taxi_rides.csv")
 ```
 
 UBER DATA
@@ -69,21 +69,6 @@ uber_rides <- uber_jfk_jan %>%
   full_join(uber_ewr_jan, by = c("airport","day", "n_rides")) %>%
   mutate(ride_type = "uber")
 ```
-
-TAXI
-```{r, label = "total taxi rides from JFK per day", warning = FALSE, echo= FALSE}
-
-totalrides_day <- function(file){
-  df <- read.csv(file)
-  df%>%
-  summarise(N = n)
-}
-
-ridesJFK_perday 
-
-```
-
-
 
 AIRPORT DATA
 ```{r, label = "get flight info", warning = FALSE, echo = FALSE}
