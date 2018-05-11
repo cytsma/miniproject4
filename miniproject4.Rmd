@@ -87,21 +87,22 @@ people_per_day <- ny_flights_jan %>%
   group_by(dest, day) %>%
   summarize(n_people = sum(seats), num_flights = n()) %>%
   ungroup() %>%
-  mutate(flight_qual = n_people / 50, airport = dest)
+  mutate(flight_qual = n_people / 5, airport = dest) %>%
+  select(-dest)
 ```
 
 COMBINE DATASETS
 ```{r, echo = FALSE, warning = FALSE}
-air_uber <- people_per_day %>%
+total_df <- people_per_day %>%
   full_join(uber_rides, by = c("day", "airport")) %>%
-  full_join(taxi_rides, by = c("day", "airport"))
+  full_join(taxi_rides, by = c("day", "airport", "n_rides", "ride_type"))
 ```
 
 MAKE PLOT
 ```{r, echo = FALSE, warning = FALSE}
-ggplot(data = air_uber, aes(x = day)) +
-  geom_line(aes(y = flight_qual), alpha = 0.5) +
+ggplot(data = total_df, aes(x = day)) +
   geom_bar(aes(y = n_rides, fill = ride_type), stat = "identity") +
+  geom_line(aes(y = flight_qual)) +
   theme(panel.grid = element_blank(),
         panel.background = element_blank(),
         text = element_text(family = "Century Schoolbook")) +
