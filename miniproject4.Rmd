@@ -9,8 +9,27 @@ output:
 ---
 
 ##
-  A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business Insider. 
+  A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business Insider.
   
+ Ride sharing is so successful because it’s simple and marketed as the cheaper option. This is true about long trips, but not necessarily for short trips (94% of Uber trips) and surge pricing makes this option even more expensive in comparison to taxis. 
+ 
+http://time.com/3556741/uber/
+
+So why is Uber the popular option? 
+1.Uber uses an app instead of physically hailing a cab. For many people, this is more accessible- whether it’s because they are more comfortable with using technology or it removes the physical problem of hailing a cab (hailing a cab brings out both issues of disability as well as racial profiling on both the driver and passenger front).
+
+2.You can estimate the cost beforehand. In taxis, there is little clarity before the ride about how expensive the ride will be. While it is an estimate, passengers can see whether they are getting a surge price, how long it will take, and this information is comforting to a lot of passengers. 
+
+3.The people who drive for Uber are a wider pool of people than career taxi drivers. (conversation)
+
+4.It’s faster. With the number of Uber drivers compared to taxi drivers, the wait for an Uber is shorter. And in a world where time is money, the number of minutes that you wait for a ride counts.
+
+How does this translate to New York City and airports? 
+
+New York City has a lot of airports, which require a high number of taxis and ride-sharing to pick up the passengers. Two airports- Newark and John F. Kennedy can provide an example of the competition between Uber and taxis. JFK airport is 16 miles east of midtown Manhattan, located in Jamaica, Queens. Newark is 15 miles outside of New York City, 18 miles away from Midtown. This doesn’t appear to be a significant difference, but the time, and the fare dependent on that time, can be a big difference. 
+
+Because of the fierce competition, other airports, like LAX in Los Angeles, have put restrictions on ride-sharing services that are not present for taxis in the same area. These restrictions include only being allowed to drive and pick up passengers in certain areas as well as not being allowed to wait for passengers. These restrictions make taxis the preferred method at LAX, unlike the rest of the city.
+
 
 ***COMPARING JFK AND EWR IN JANUARY 2017***
 
@@ -26,10 +45,41 @@ library(extrafont)
 nyctaxi <- dbConnect_scidb(dbname = "nyctaxi")
 airlines <- dbConnect_scidb(dbname = "airlines")
 uber_jan <- read.csv("./jan2015uber.csv")
+j01 <- read.csv("./TaxiJan2017_o1.csv")
+j02 <- read.csv("./TaxiJan2017_o2.csv")
+j03 <- read.csv("./TaxiJan2017_o3.csv")
+j04 <- read.csv("./TaxiJan2017_o4.csv")
+j05 <- read.csv("./TaxiJan2017_o5.csv")
+j06 <- read.csv("./TaxiJan2017_o6.csv")
+j07 <- read.csv("./TaxiJan2017_o7.csv")
+j08 <- read.csv("./TaxiJan2017_o8.csv")
+j09 <- read.csv("./TaxiJan2017_o9.csv")
+j10 <- read.csv("./TaxiJan2017_10.csv")
+j11 <- read.csv("./TaxiJan2017_11.csv")
+j12 <- read.csv("./TaxiJan2017_12.csv")
+j13 <- read.csv("./TaxiJan2017_13.csv")
+j14 <- read.csv("./TaxiJan2017_14.csv")
+j15 <- read.csv("./TaxiJan2017_15.csv")
+j16 <- read.csv("./TaxiJan2017_16.csv")
+j17 <- read.csv("./TaxiJan2017_17.csv")
+j18 <- read.csv("./TaxiJan2017_18.csv")
+j19 <- read.csv("./TaxiJan2017_19.csv")
+j20 <- read.csv("./TaxiJan2017_20.csv")
+j21 <- read.csv("./TaxiJan2017_21.csv")
+j22 <- read.csv("./TaxiJan2017_22.csv")
+j23 <- read.csv("./TaxiJan2017_23.csv")
+j24 <- read.csv("./TaxiJan2017_24.csv")
+j25 <- read.csv("./TaxiJan2017_25.csv")
+j26 <- read.csv("./TaxiJan2017_26.csv")
+j27 <- read.csv("./TaxiJan2017_27.csv")
+j28 <- read.csv("./TaxiJan2017_28.csv")
+j29 <- read.csv("./TaxiJan2017_29.csv")
+j30 <- read.csv("./TaxiJan2017_30.csv")
+j31 <- read.csv("./TaxiJan2017_31.csv")
 ```
 
 UBER DATA
-```{r echo = FALSE warning = FALSE} 
+```{r, echo = FALSE, warning = FALSE} 
 #jfk
 uber_jfk_jan <- uber_jan %>%
   filter(locationID == 132) %>%
@@ -48,8 +98,10 @@ uber_rides <- uber_jfk_jan %>%
   full_join(uber_ewr_jan, by = c("airport","day", "uber_ride_n"))
 ```
 
+
+
 AIRPORT DATA
-```{r, label = "get flight info" warning = FALSE echo = FALSE}
+```{r, label = "get flight info", warning = FALSE, echo = FALSE}
 ny_flights_jan <- airlines %>%
   dbGetQuery("SELECT f.day, f.dest, p.seats FROM airlines.flights f
 INNER JOIN airlines.planes p
@@ -68,7 +120,7 @@ people_per_day <- ny_flights_jan %>%
   select(-dest)
 ```
 
-```{r}
+```{r, echo = FALSE, warning = FALSE}
 air_uber <- people_per_day %>%
   full_join(uber_rides, by = c("day", "airport"))
 
@@ -76,8 +128,8 @@ air_uber <- people_per_day %>%
 ```
 
 PLOTS
-```{r, label = "make plots!"}
-JOIN ALL DATASETS! then do:
+```{r, label = "make plots!", echo = FALSE, warning = FALSE}
+#JOIN ALL DATASETS! then do:
   #geom_bar(data = RIDE_INFO, x = day, y = num_rides, fill = type, stat = "identity")
 
 base_plot <- ggplot() +
@@ -100,6 +152,11 @@ jfk_plot
 ewr_plot
 ```
 
+```{r}
+
+
+```
+
 
 OLD STUFF:
 calculated most average month
@@ -119,6 +176,25 @@ calculated most average month
 #  mutate(near_avg = abs((sum/mean) - 1)) %>%
 #  arrange(near_avg) %>%
 #  head(1)
+
+In trying to turn a string into just a day of a filtered month in the data package *nyctaxi yellow #2017* I couldn't figure out a way to select a string from **tpep_pickup_datetime** without losing all of the data atatched to it or to make a function that would be able to delete the first and last part of the string only leaving the date. The package was also so big that even with 50,000 rows I was not able to have all the days of the month included.
+#SELECT * 
+#FROM nyctaxi.yellow
+#WHERE tpep_pickup_datetime LIKE  '%2017-03%';
+
+#SELECT
+#SUBSTRING_INDEX('2017-03-09 21:30:11', ' ' , -1)
+#;
+#SELECT
+#SUBSTRING_INDEX('09 21:30:11', ' ' , 1)
+#;
+#SELECT
+#SUBSTRING_INDEX('09', '0', -1)
+#;
+#SELECT RIGHT('2017-03-09 21:30:11', 11) 
+#;
+#SELECT LEFT('09 21:30:11', 2);
+
 
 got stuck doing both but tried to just alter the original Uber data to get the final thing
 #temp <- uber_jan %>%
