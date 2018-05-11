@@ -111,7 +111,6 @@ ggplot(data = total_df) +
   facet_wrap(~airport, ncol = 1, labeller = as_labeller(c("EWR" = "Newark Liberty International Airport", "JFK" = "John F. Kennedy International Airport")))
 ```
 
-<<<<<<< HEAD
 ***What does this all mean?***
 Taxis are used at a higher rate compared to taxis at both airports, at such a great difference that you can barely see the Uber rides on the graph. 
 
@@ -123,12 +122,8 @@ Uber is a popular service, but is it undercutting Uber in the way that is widely
 
 It is important to note that data from multiple years was used. There was a restiction on what data was available because the data sets are so large. While general trends of competition between the two ride services can be measured, it is also important to note that it is not exact to compare these two data sets. 
 
-```{r}
-#comparing uber to taxi
-=======
 ```{r, echo = FALSE, warning = FALSE}
 #comparing number of uber to taxi rides
->>>>>>> 59f7f639c942b31b9bf1465bd18a2634803413c9
 comparison <- total_df %>%
   select(n_rides, ride_type) %>%
   filter(!is.na(ride_type)) %>%
