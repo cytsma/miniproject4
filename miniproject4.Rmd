@@ -84,18 +84,18 @@ UBER DATA
 uber_jfk_jan <- uber_jan %>%
   filter(locationID == 132) %>%
   group_by(day) %>%
-  summarise(num = n()) %>%
-  mutate(origin = "JFK")
+  summarise(uber_ride_n = n()) %>%
+  mutate(airport = "JFK")
 
 #newark
 uber_ewr_jan <- uber_jan %>%
   filter(locationID == 1) %>%
   group_by(day) %>%
-  summarise(num = n()) %>%
-  mutate(origin = "EWR")
+  summarise(uber_ride_n = n()) %>%
+  mutate(airport = "EWR")
 
-temp <- uber_jan %>%
-  filter(locationID == 132 | locationID == 1)
+uber_rides <- uber_jfk_jan %>%
+  full_join(uber_ewr_jan, by = c("airport","day", "uber_ride_n"))
 ```
 TAXI
 
@@ -130,22 +130,17 @@ AND f.dest in ('JFK', 'EWR');")
 ```{r, label = "max number of people leaving per day", echo = FALSE, warning = FALSE}
 people_per_day <- ny_flights_jan %>% 
   group_by(dest, day) %>%
-  summarize(num_people = sum(seats), num_flights = n()) %>%
+  summarize(flight_people = sum(seats), num_flights = n()) %>%
   ungroup() %>%
-  mutate(num_qual = num_people / 10)
-
-ewr_people <- people_per_day %>%
-  filter(dest == "EWR") %>%
-  select(-dest)
-
-jfk_people <- people_per_day %>%
-  filter(dest == "JFK") %>%
+  mutate(flight_qual = flight_people / 10, airport = dest) %>%
   select(-dest)
 ```
 
 ```{r, echo = FALSE, warning = FALSE}
 air_uber <- people_per_day %>%
-  inner_join(uber_jan)
+  full_join(uber_rides, by = c("day", "airport"))
+
+
 ```
 
 PLOTS
@@ -215,3 +210,9 @@ In trying to turn a string into just a day of a filtered month in the data packa
 #SELECT RIGHT('2017-03-09 21:30:11', 11) 
 #;
 #SELECT LEFT('09 21:30:11', 2);
+
+
+got stuck doing both but tried to just alter the original Uber data to get the final thing
+#temp <- uber_jan %>%
+# filter(locationID == 132 | locationID == 1) %>%
+#  mutate(replace(locationID, locationID == 132, "JFK"), replace(locationID, locationID == 1, "EWR"))
