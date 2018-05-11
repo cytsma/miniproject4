@@ -49,8 +49,9 @@ taxi_rides <- read.csv("./taxi_rides.csv") %>%
   mutate(ride_type = "taxi")
 ```
 
-UBER DATA
+
 ```{r, echo = FALSE, warning = FALSE} 
+#uber data
 #jfk
 uber_jfk_jan <- uber_jan %>%
   filter(locationID == 132) %>%
@@ -71,8 +72,9 @@ uber_rides <- uber_jfk_jan %>%
   mutate(ride_type = "uber")
 ```
 
-AIRPORT DATA
+
 ```{r, label = "get flight info", warning = FALSE, echo = FALSE}
+#flight info
 #get flight data from MySQL
 ny_flights_jan <- airlines %>%
   dbGetQuery("SELECT f.day, f.dest, p.seats FROM airlines.flights f
@@ -91,25 +93,37 @@ people_per_day <- ny_flights_jan %>%
   select(-dest)
 ```
 
-COMBINE DATASETS
+
 ```{r, echo = FALSE, warning = FALSE}
+#combining datasets
 total_df <- people_per_day %>%
   full_join(uber_rides, by = c("day", "airport")) %>%
   full_join(taxi_rides, by = c("day", "airport", "n_rides", "ride_type"))
 ```
 
-MAKE PLOT
-```{r, echo = FALSE, warning = FALSE}
+```{r, echo = FALSE}
+#plot
 ggplot(data = total_df, aes(x = day)) +
   geom_bar(aes(y = n_rides, fill = ride_type), stat = "identity") +
   geom_line(aes(y = flight_qual)) +
   theme(panel.grid = element_blank(),
         panel.background = element_blank(),
-        text = element_text(family = "Century Schoolbook")) +
+        text = element_text(family = "Times")) +
     scale_y_continuous("Number of Rides") +
     scale_x_continuous("Day") +
     ggtitle("January 2017") +
   facet_wrap(~airport, ncol = 1)
+```
+
+```{r}
+#comparing uber to taxi
+comparison <- total_df %>%
+  select(n_rides, ride_type) %>%
+  filter(!is.na(ride_type)) %>%
+  group_by(ride_type) %>%
+  summarize(N = sum(n_rides)) %>%
+  ungroup() %>%
+  mutate(prop = N / sum(N))
 ```
 
 OLD STUFF:
