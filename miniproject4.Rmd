@@ -1,5 +1,5 @@
 ---
-title: "'Hail No!' Say Taxis to Uber"
+title: "'Hail No!' Say Taxi Drivers to Uber"
 author: "Cai Ytsma, Juliane Bombosch, Sofia Salcedo"
 date: "May 10, 2018"
 output: 
