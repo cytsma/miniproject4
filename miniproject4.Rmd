@@ -19,6 +19,7 @@ output:
 library(tidyverse)
 library(mdsr)
 library(RMySQL)
+library(extrafont)
 
 #define databases
 nyctaxi <- dbConnect_scidb(dbname = "nyctaxi")
@@ -32,13 +33,18 @@ UBER DATA
 uber_jfk_jan <- uber_jan %>%
   filter(locationID == 132) %>%
   group_by(day) %>%
-  summarise(num = n()) 
+  summarise(num = n()) %>%
+  mutate(origin = "JFK")
 
 #newark
 uber_ewr_jan <- uber_jan %>%
   filter(locationID == 1) %>%
   group_by(day) %>%
-  summarise(num = n())
+  summarise(num = n()) %>%
+  mutate(origin = "EWR")
+
+temp <- uber_jan %>%
+  filter(locationID == 132 | locationID == 1)
 ```
 
 AIRPORT DATA
@@ -55,8 +61,9 @@ AND f.dest in ('JFK', 'EWR');")
 ```{r, label = "max number of people leaving per day", echo = FALSE, warning = FALSE}
 people_per_day <- ny_flights_jan %>% 
   group_by(dest, day) %>%
-  summarize(num_people = sum(seats)) %>%
-  ungroup()
+  summarize(num_people = sum(seats), num_flights = n()) %>%
+  ungroup() %>%
+  mutate(num_qual = num_people / 10)
 
 ewr_people <- people_per_day %>%
   filter(dest == "EWR") %>%
@@ -67,14 +74,33 @@ jfk_people <- people_per_day %>%
   select(-dest)
 ```
 
-PLOTS
 ```{r}
-ewr_plot <- ggplot(aes(x = day, y = num)) +
-  geom_line(data = ewr_people) +
-  geom_bar(data = uber_ewr_jan) +
-  theme(panel.grid = element_blank(),
-        panel.background = element_blank())
+air_uber <- people_per_day %>%
+  inner_join(uber_jan)
+```
 
+PLOTS
+```{r, label = "make plots!"}
+JOIN ALL DATASETS! then do:
+  #geom_bar(data = RIDE_INFO, x = day, y = num_rides, fill = type, stat = "identity")
+
+base_plot <- ggplot() +
+    theme(panel.grid = element_blank(),
+        panel.background = element_blank(),
+        text = element_text(family = "Century Schoolbook")) +
+    scale_y_continuous("Number of Rides") +
+    scale_x_continuous("Day") +
+    ggtitle("Newark Airport", subtitle = "January 2017")
+
+ewr_plot <- base_plot +
+  geom_line(data = ewr_people, aes(x = day, y = num_qual), alpha = 0.5)
+  #barplot
+
+jfk_plot<- base_plot +
+  geom_line(data = jfk_people, aes(x = day, y = num_qual), alpha = 0.5)
+  #barplot
+
+jfk_plot
 ewr_plot
 ```
 
