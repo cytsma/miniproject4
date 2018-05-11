@@ -1,14 +1,14 @@
 ---
-title: "Mini Project 4"
+title: "'Hail No!' Say Taxis to Uber"
 author: "Cai Ytsma, Juliane Bombosch, Sofia Salcedo"
-date: "April 27, 2018"
+date: "May 10, 2018"
 output: 
   html_document:
     code_folding: hide
     df_print: paged
 ---
 
-##
+
 A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business Insider.
   
 Using Uber data (2015) that was available, and comparing that to taxi data, we looked for general trends related to flights out of two airports: Newark and JFK. While the taxi and airport data was recorded in January 2017, a clear pattern in preference emerges.  
