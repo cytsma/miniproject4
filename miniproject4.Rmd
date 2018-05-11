@@ -107,14 +107,17 @@ total_rides_j01 <- j01 %>%
   nrow()
 
 total_rides_j01
-filename_list <- c("", "", "", "",)
+filename_list <- c("./TaxiJan2017_o1.csv", "./TaxiJan2017_o2.csv", "./TaxiJan2017_o3.csv", "./TaxiJan2017_o4.csv")
 
-totalrides_day <- function(filename_list){
+totalrides_day <- function(file){
   df <- read.csv(file)
   df%>%
   summarise(N = n)
   return(temp_K)
 }
+
+lapply(filename_list, totalrides_day)
+
 
 ```
 
@@ -135,8 +138,7 @@ people_per_day <- ny_flights_jan %>%
   group_by(dest, day) %>%
   summarize(n_people = sum(seats), num_flights = n()) %>%
   ungroup() %>%
-  mutate(flight_qual = n_people / 50, airport = dest) %>%
-  select(-dest)
+  mutate(flight_qual = n_people / 50, airport = dest)
 ```
 
 COMBINE DATASETS
@@ -195,9 +197,3 @@ In trying to turn a string into just a day of a filtered month in the data packa
 #SELECT RIGHT('2017-03-09 21:30:11', 11) 
 #;
 #SELECT LEFT('09 21:30:11', 2);
-
-
-got stuck doing both but tried to just alter the original Uber data to get the final thing
-#temp <- uber_jan %>%
-# filter(locationID == 132 | locationID == 1) %>%
-#  mutate(replace(locationID, locationID == 132, "JFK"), replace(locationID, locationID == 1, "EWR"))
