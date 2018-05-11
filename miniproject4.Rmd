@@ -9,8 +9,27 @@ output:
 ---
 
 ##
-  A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business Insider. 
+  A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business Insider.
   
+ Ride sharing is so successful because it’s simple and marketed as the cheaper option. This is true about long trips, but not necessarily for short trips (94% of Uber trips) and surge pricing makes this option even more expensive in comparison to taxis. 
+ 
+http://time.com/3556741/uber/
+
+So why is Uber the popular option? 
+1.Uber uses an app instead of physically hailing a cab. For many people, this is more accessible- whether it’s because they are more comfortable with using technology or it removes the physical problem of hailing a cab (hailing a cab brings out both issues of disability as well as racial profiling on both the driver and passenger front).
+
+2.You can estimate the cost beforehand. In taxis, there is little clarity before the ride about how expensive the ride will be. While it is an estimate, passengers can see whether they are getting a surge price, how long it will take, and this information is comforting to a lot of passengers. 
+
+3.The people who drive for Uber are a wider pool of people than career taxi drivers. (conversation)
+
+4.It’s faster. With the number of Uber drivers compared to taxi drivers, the wait for an Uber is shorter. And in a world where time is money, the number of minutes that you wait for a ride counts.
+
+How does this translate to New York City and airports? 
+
+New York City has a lot of airports, which require a high number of taxis and ride-sharing to pick up the passengers. Two airports- Newark and John F. Kennedy can provide an example of the competition between Uber and taxis. JFK airport is 16 miles east of midtown Manhattan, located in Jamaica, Queens. Newark is 15 miles outside of New York City, 18 miles away from Midtown. This doesn’t appear to be a significant difference, but the time, and the fare dependent on that time, can be a big difference. 
+
+Because of the fierce competition, other airports, like LAX in Los Angeles, have put restrictions on ride-sharing services that are not present for taxis in the same area. These restrictions include only being allowed to drive and pick up passengers in certain areas as well as not being allowed to wait for passengers. These restrictions make taxis the preferred method at LAX, unlike the rest of the city.
+
 
 ***COMPARING JFK AND EWR IN JANUARY 2017***
 
@@ -29,7 +48,7 @@ uber_jan <- read.csv("./jan2015uber.csv")
 ```
 
 UBER DATA
-```{r echo = FALSE warning = FALSE} 
+```{r, echo = FALSE, warning = FALSE} 
 #jfk
 uber_jfk_jan <- uber_jan %>%
   filter(locationID == 132) %>%
@@ -49,7 +68,7 @@ temp <- uber_jan %>%
 ```
 
 AIRPORT DATA
-```{r, label = "get flight info" warning = FALSE echo = FALSE}
+```{r, label = "get flight info", warning = FALSE, echo = FALSE}
 ny_flights_jan <- airlines %>%
   dbGetQuery("SELECT f.day, f.dest, p.seats FROM airlines.flights f
 INNER JOIN airlines.planes p
@@ -75,14 +94,14 @@ jfk_people <- people_per_day %>%
   select(-dest)
 ```
 
-```{r}
+```{r, echo = FALSE, warning = FALSE}
 air_uber <- people_per_day %>%
   inner_join(uber_jan)
 ```
 
 PLOTS
-```{r, label = "make plots!"}
-JOIN ALL DATASETS! then do:
+```{r, label = "make plots!", echo = FALSE, warning = FALSE}
+#JOIN ALL DATASETS! then do:
   #geom_bar(data = RIDE_INFO, x = day, y = num_rides, fill = type, stat = "identity")
 
 base_plot <- ggplot() +
