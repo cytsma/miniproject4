@@ -11,7 +11,7 @@ output:
 ***An Introduction to Uber***
 
 A new epidemic has arisen, striking fear into the hearts of New York City Taxi drivers. This epidemic goes by many aliases, the most well known ones being "Uber" and "Lyft." Uber was officially launched in June 2010. Between 2011 and 2015, Uber has provided around 82,000 rides per day in New York City. By 2015, Uber was been named one of the most valuable startup companies in the world by Business Insider.
-  
+
 Using Uber data (2015) that was available, and comparing that to taxi data, we looked for general trends related to  domestic flights out of two airports: Newark and JFK. While the taxi and airport data was recorded in January 2017, a clear pattern in preference emerges.  
 
 Ride sharing is so successful because it’s simple and marketed as the cheaper option. This is true about long trips, but not necessarily for short trips (94% of Uber trips) and surge pricing makes this option even more expensive in comparison to taxis [Time 2014](http://time.com/3556741/uber/). 
@@ -111,7 +111,7 @@ ggplot(data = total_df, aes(x = day)) +
   facet_wrap(~airport, ncol = 1, labeller = as_labeller(c("EWR" = "Newark Liberty International Airport", "JFK" = "John F. Kennedy International Airport")))
 ```
 
-<<<<<<< HEAD
+
 ***What does this all mean?***
 Taxis are used at a higher rate compared to taxis at both airports, at such a great difference that you can barely see the Uber rides on the graph. 
 
@@ -125,10 +125,8 @@ It is important to note that data from multiple years was used. There was a rest
 
 ```{r}
 #comparing uber to taxi
-=======
-```{r, echo = FALSE, warning = FALSE}
 #comparing number of uber to taxi rides
->>>>>>> 59f7f639c942b31b9bf1465bd18a2634803413c9
+
 comparison <- total_df %>%
   select(n_rides, ride_type) %>%
   filter(!is.na(ride_type)) %>%
