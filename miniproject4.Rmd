@@ -124,7 +124,8 @@ people_per_day <- ny_flights_jan %>%
 air_uber <- people_per_day %>%
   full_join(uber_rides, by = c("day", "airport"))
 
-
+plot <- ggplot(data = air_uber, aes(x = day)) +
+  geom_line(aes(y = flight_qual))
 ```
 
 PLOTS
